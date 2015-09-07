@@ -74,9 +74,9 @@ win.on('close', function() {
   console.log("Stopping BitcoinDarkd Process...");
   //stopBTCD();
     if (process.platform == 'darwin') { //If Mac OS X
-	ExecuteProcess('pkill','-9 BitcoinDarkd');
+	ExecuteProcess('pkill','BitcoinDarkd');
 	} else if (process.platform == 'linux') { //If Linux
-	ExecuteProcess('pkill','-9 BitcoinDarkd');
+	ExecuteProcess('pkill','BitcoinDarkd');
 	} else { //Else it's Windows
     ExecuteProcess('taskkill','/im BitcoinDarkd.exe');
 	}
