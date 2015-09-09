@@ -1,0 +1,1996 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui/jquery-ui.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/jquery.growl.css" />
+	<link rel="stylesheet" type="text/css" href="css/perfect-scrollbar.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/tooltipster.css" />
+	<link rel="stylesheet" type="text/css" href="css/spectrum.css" />
+	<link rel="stylesheet" href="css/style.css">
+
+    <link rel="icon" href="img/favicon.ico" type="img/x-icon" />
+	
+	
+	<style type="text/css" id="temp_label_style" data-ctext="" data-cbg="">
+
+	</style>
+	
+	
+	<title>instantDEX Beta</title>
+	
+</head>
+
+<body>
+
+		
+
+	<div id="body_wrap">
+
+
+		<div id="main_wrap" class="unselectable">
+
+		
+			<div class="popup-overlay">
+			
+			</div>
+		
+			<!------------------------- START LOADING OVERLAY ----------------------------->
+
+			<div class="loading-overlay active">
+			
+			</div>
+			
+			<div class="loading-screen active">
+				<div class="loading-text">
+					<span class="vert-align">Loading...</span>
+				</div>
+				<div class="temp-exit"><span>CLOSE</span></div>
+			</div>
+			<!------------------------- END LOADING OVERLAY ----------------------------->
+
+			
+			
+			<!------------------------- START HEADER ----------------------------->
+			<div class="mainHeader" class="unselectable">
+
+				<div id="topLogoWrap">
+					<img id="topLogo" src="img/logo-hor.svg"></img>
+				</div>
+
+				<div class="mainHeader-grid-icons">
+					<div class="mainHeader-grid-ico-section">
+						<div class="mainHeader-grid-ico-wrap grid-trig grid-trig-watchlist tooltip" title="favorite" data-grid="watchlist">
+							<img class="vert-align mainHeader-grid-ico-watchlist" src="img/favorite.png"></img>
+						</div>
+						<div class="mainHeader-grid-ico-wrap grid-trig" data-grid="chart">
+							<img class="vert-align mainHeader-grid-ico-chart" src="img/amount.png"></img>
+						</div>
+						<div class="mainHeader-grid-ico-wrap grid-trig grid-trig-orderbook" data-grid="orderbook">
+							<img class="vert-align mainHeader-grid-ico-orderbook" src="img/clipboard.png"></img>
+						</div>
+						<div class="mainHeader-grid-ico-wrap grid-trig grid-trig-marketHistory" data-grid="marketHistory">
+							<img class="vert-align mainHeader-grid-ico-marketHistory" src="img/notebook.png"></img>
+						</div>
+					</div>
+					<div class="mainHeader-grid-ico-section">
+						<div class="mainHeader-grid-ico-wrap grid-trig grid-trig-orders" data-grid="orders">
+							<img class="vert-align mainHeader-grid-ico-orders" src="img/orders.png"></img>
+						</div>
+						<div class="mainHeader-grid-ico-wrap grid-trig grid-trig-marketHistory" data-grid="trades">
+							<img class="vert-align mainHeader-grid-ico-marketHistory" src="img/history.png"></img>
+						</div>
+						<div class="mainHeader-grid-ico-wrap grid-trig grid-trig-balances" data-grid="balances">
+							<img class="vert-align mainHeader-grid-ico-balances" src="img/wallet.png"></img>
+						</div>
+					</div>
+					<div class="mainHeader-grid-ico-section">
+						<div class="mainHeader-grid-ico-wrap popup-trig grid-trig-labels" data-grid="labels">
+							<img class="vert-align mainHeader-grid-ico-labels" src="img/paint2.png"></img>
+						</div>
+						<!--<div class="mainHeader-grid-ico-wrap grid-trig grid-trig-alarms" data-grid="alarms">
+							<img class="vert-align mainHeader-grid-ico-alarms" src="img/alarm.png"></img>
+						</div>
+						<div class="mainHeader-grid-ico-wrap grid-trig" data-grid="logs">
+							<img class="vert-align mainHeader-grid-ico-logs" src="img/notebook.png"></img>
+						</div>-->
+						<!--<div class="mainHeader-grid-ico-wrap grid-trig" data-grid="info">
+							<img class="vert-align mainHeader-grid-ico-info" src="img/info.png"></img>
+						</div>-->
+					</div>
+				
+				</div>
+						
+				<div class="mainHeader-menu">
+
+					<div class="mainHeader-menu-right">
+						<div class="mainHeader-menu-cell mainHeader-menu-cellIcon">
+							<img src="img/settings2.png" class="vert-align mainHeader-menu-ico-settings"></img>
+						</div>
+						<!--<div class="mainHeader-menu-cell mainHeader-menu-cellIcon">
+							<img src="img/markets.svg" class="vert-align mainHeader-menu-ico-markets"></img>
+						</div>-->
+						<div class="mainHeader-menu-cell mainHeader-menu-cellIcon">
+							<img src="img/orders.svg" class="vert-align mainHeader-menu-ico-orders fullPopup-trig" data-popup="allExchangesFullPopup"></img>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			
+			<!------------------------- END HEADER ----------------------------->
+
+			
+			<!------------------------- START CONTENT WRAP ----------------------------->
+
+			<div id="content_wrap">
+
+			
+				<div class="grids" id="grids">
+				
+
+
+				</div>
+				
+				
+				
+			
+				<div id="tile_add">
+					<div class="tile-add-header">
+						
+					</div>
+					<div class="tile-add-body">
+					
+					</div>
+				</div>
+		
+				
+				<div id="allExchangesFullPopup" class="fullPopup allExchangesFullPopup">
+				
+					<div class="popup-header">
+						<div class="popup-header-title">
+							<span class="vert-align">All Exchanges</span>
+						</div>
+						<div class="popup-header-icons">
+							<div class="popup-header-ico">
+								<img class="popup-header-close vert-align" src="img/close.png"></img>
+							</div>
+						</div>
+					</div>
+					
+					<div class="fullPopup-body">
+					
+					
+						<div class="allExchanges-nav">
+							<div class="allExchanges-nav-cell" data-exchange="nxtae">
+								<span>NXT AE</span>
+							</div>
+							<div class="allExchanges-nav-cell" data-exchange="idex">
+								<span>InstantDEX</span>
+							</div>
+						</div>
+						
+						
+						<div class="allExchanges-exchange-wrap">
+						
+							<div class="allExchanges-exchange active" data-exchange="nxtae">
+						
+								<div class="allExchanges-exchange-nav">
+									<div class="allExchanges-exchange-nav-cell" data-tab="1">
+										<span>Markets</span>
+									</div>
+									<div class="allExchanges-exchange-nav-cell" data-tab="2">
+										<span>Balances</span>
+									</div>
+									<div class="allExchanges-exchange-nav-cell" data-tab="3">
+										<span>Orders</span>
+									</div>
+								</div>
+								
+								<div class="allExchanges-exchange-content-wrap">
+						
+									<div class="allExchanges-exchange-content active" data-tab="1">
+									
+										<div class="exchange-market-table-wrap">
+											<div class="exchange-market-table">
+												<table data-keys="market baseID volume change last bid ask">
+													<thead>
+														<th>Market</th>
+														<th>Asset ID</th>
+														<th>Volume</th>
+														<!--<th>change</th>
+														<th>last</th>
+														<th>bid</th>
+														<th>ask</th>-->
+													</thead>
+													
+													<tbody>
+													
+													</tbody>
+
+												
+												</table>
+											</div>
+										</div>
+										
+									</div>
+									
+									
+									<div class="allExchanges-exchange-content" data-tab="2">
+									
+
+										
+									</div>
+									
+									
+									<div class="allExchanges-exchange-content" data-tab="2">
+									
+
+										
+									</div>
+									
+									
+								</div>
+								
+							</div>
+							
+						
+							<div class="allExchanges-exchange" data-exchange="idex">
+						
+						
+								<div class="allExchanges-exchange-nav">
+									<div class="allExchanges-exchange-nav-cell" data-tab="1">
+										<span>Markets</span>
+									</div>
+									<div class="allExchanges-exchange-nav-cell" data-tab="2">
+										<span>Balances</span>
+									</div>
+									<div class="allExchanges-exchange-nav-cell" data-tab="3">
+										<span>Orders</span>
+									</div>
+								</div>
+								
+								
+								<div class="allExchanges-exchange-content-wrap">
+						
+						
+									<div class="allExchanges-exchange-content active" data-tab="1">
+									
+										
+									</div>
+									
+									
+									<div class="allExchanges-exchange-content" data-tab="2">
+									
+
+										
+									</div>
+									
+									
+									<div class="allExchanges-exchange-content" data-tab="2">
+									
+
+										
+									</div>
+									
+									
+								</div>
+								
+							</div>
+						
+						</div>
+				
+					</div>
+				
+				</div>
+		
+				
+				<div id="orderbookSearch_popup" class="popup orderbookSearchPopup">
+				
+					<div class="popup-wrap">
+					
+						<div class="popup-header">
+							<div class="popup-header-title">
+								<span class="vert-align">Market search</span>
+							</div>
+							<div class="popup-header-icons">
+								<div class="popup-header-ico">
+									<img class="popup-header-close vert-align" src="img/close.png"></img>
+								</div>
+							</div>
+						</div>
+						
+						<div class="banner">
+							<span></span>
+						</div>
+						
+						<div class="popup-content orderbookSearch-popup-content tab-trig-wrap">
+						
+							<!--<div class="tab-nav">
+								<div class="tab-nav-cell" data-tab="1">
+									<span>Markets</span>
+								</div>
+							</div>-->
+						
+							<div class="tab-wrap active" data-tab="1" data-searchtype="market">
+								<div class="orderbookSearch-popup-inputArea">
+									<form role="form" class="orderbookSearch-popup-form" autocomplete="off">
+										<div class="form-row">
+											<div class="form-label">
+												<span>Market</span>
+											</div>
+											<div class="form-input-outer">
+												<div class="form-input">
+													<input type="text" name="market" class="market-search" data-market="-1"></input>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+							
+							<div class="tab-wrap" data-tab="2" data-searchtype="basket">
+							
+							</div>
+							
+							<!--<div class="tab-wrap" data-tab="3" data-searchtype="coin">
+								<div class="orderbookSearch-popup-inputArea">
+									<form role="form" class="orderbookSearch-popup-form" autocomplete="off">
+
+										<div class="form-row">
+											<div class="form-label">
+												<span>Base</span>
+											</div>
+											<div class="form-input-outer">
+												<div class="form-input">
+													<input type="text" name="baseid" class="asset-search" data-asset="-1"></input>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-row">
+											<div class="form-label">
+												<span>Quote</span>
+											</div>
+											<div class="form-input-outer">
+												<div class="form-input">
+													<input type="text" name="relid" class="asset-search" data-asset="-1"></input>
+												</div>
+											</div>
+										</div>
+
+									</form>
+								</div>
+							</div>-->
+							
+
+							
+							<div class="popup-buttonArea orderbookSearch-popup-buttonArea">
+								<div class="nbutton-text-wrap">
+									<div class="nbutton-text-outer">
+										<div class="nbutton-text orderbookSearch-search-trig">
+											<div class="nbutton-text-inner">
+												<div class="nbutton-text-title">
+													<span class="vert-align">Open orderbook</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						
+						</div>
+					</div>
+				
+				</div>
+		
+		
+		
+		
+				<div id="marketSearch_popup" class="popup marketSearchPopup">
+				
+					<div class="popup-header">
+						<div class="popup-header-title">
+							<span class="vert-align">Market search</span>
+						</div>
+						<div class="popup-header-icons">
+							<div class="popup-header-ico">
+								<img class="popup-header-close vert-align" src="img/close.png"></img>
+							</div>
+						</div>
+					</div>
+					
+					<div class="banner">
+						<span></span>
+					</div>
+					
+					<div class="popup-content marketSearch-popup-content tab-trig-wrap">
+						
+						<!--<div class="tab-nav">
+							<div class="tab-nav-cell" data-tab="1">
+								<span>Markets</span>
+							</div>
+							<div class="tab-nav-cell" data-tab="2">
+								<span>Baskets</span>
+							</div>
+						</div>-->
+					
+						<div class="tab-wrap active" data-tab="1" data-searchtype="market">
+							<div class="marketSearch-popup-inputArea">
+								<form role="form" class="marketSearch-popup-form" autocomplete="off">
+									<div class="form-row">
+										<div class="form-label">
+											<span>Market</span>
+										</div>
+										<div class="form-input-outer">
+											<div class="form-input">
+												<input type="text" name="market" class="market-search" data-market="-1"></input>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						
+						<div class="tab-wrap" data-tab="2" data-searchtype="basket">
+						
+						</div>
+							
+						
+						<div class="popup-buttonArea marketSearch-popup-buttonArea">
+							<div class="nbutton-text-wrap">
+								<div class="nbutton-text-outer">
+									<div class="nbutton-text marketSearch-add-trig">
+										<div class="nbutton-text-inner">
+											<div class="nbutton-text-title">
+												<span class="vert-align">Add</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+				
+				</div>
+				
+				
+			
+				<div id="shareChart_popup" class="popup shareChartPopup">
+				
+					<div class="popup-wrap">
+					
+						<div class="popup-header">
+							<div class="popup-header-title">
+								<span class="vert-align">Share Chart</span>
+							</div>
+							<div class="popup-header-icons">
+								<div class="popup-header-ico">
+									<img class="popup-header-close vert-align" src="img/close.png"></img>
+								</div>
+							</div>
+						</div>
+						
+
+						
+						<div class="popup-content orderbookSearch-popup-content tab-trig-wrap">
+						
+							<div class="shartChartPopup-text">
+								<span>View chart in Cryptosleuth?</span>
+							</div>
+							
+							<div class="popup-buttonArea orderbookSearch-popup-buttonArea">
+								<div class="nbutton-text-wrap">
+									<div class="nbutton-text-outer">
+										<div class="nbutton-text shareChartPopup-trig">
+											<div class="nbutton-text-inner">
+												<div class="nbutton-text-title">
+													<span class="vert-align">View</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						
+						</div>
+					</div>
+				
+				</div>
+		
+		
+		
+				
+				<div id="chartIndicator_popup" class="popup chartIndicatorPopup">
+				
+					<div class="popup-header">
+						<div class="popup-header-title">
+							<span class="vert-align">Indicator Selection</span>
+						</div>
+						<div class="popup-header-icons">
+							<div class="popup-header-ico">
+								<img class="popup-header-close vert-align" src="img/close.png"></img>
+							</div>
+						</div>
+					</div>
+					
+					<div class="banner">
+						<span></span>
+					</div>
+					
+					<div class="popup-content">
+
+						<div class="chartIndicatorPopup-indList-wrap">
+						
+							<div class="chartIndicatorPopup-indList">
+							
+							</div>
+						
+						</div>
+						
+						<div class="chartIndicatorPopup-indSettings-wrap">
+						
+						</div>
+					
+					
+					</div>
+				
+				</div>
+				
+		
+		
+				<div class="popup orderbook-label-popup">
+				
+					<div class="popup-header">
+						<div class="popup-header-title">
+							<span class="vert-align">Orderbook labels</span>
+						</div>
+						<div class="popup-header-icons">
+							<div class="popup-header-ico">
+								<img class="popup-header-close vert-align orderbook-label-popup-close" src="img/close.png"></img>
+							</div>
+						</div>
+					</div>
+					
+					<div class="orderbook-label-popup-main">
+					
+						<div class="orderbook-label-popup-banner success">
+							<span id="orderbook_label_popup_banner" class="vert-align"></span>
+						</div>
+					
+						<div class="orderbook-label-popup-left">
+						
+							<div class="label-left-overlay active">
+								<div class="label-left-overlay-title">
+									<span>Load a label</span>
+								</div>
+							</div>
+							
+							<div class="label-example-row label-example">
+								<span id="label_example" class="vert-align label-temp"></span>
+							</div>
+							<div class="orderbook-label-popup-row">
+								<div class="orderbook-label-row-title">
+									<span>Label:</span>
+								</div>
+								<div class="orderbook-label-row-input orderbook-label-conf">
+									<input class="auto-label-exchange exchange-search" type="text" name="exchange" placeholder="Exchange"></input>
+								</div>
+								<!--<div class="orderbook-label-row-input orderbook-label-conf">
+									<input type="text" name="nxtrs" placeholder="NXT RS"></input>
+								</div>-->
+							</div>
+							<div class="orderbook-label-popup-row">
+								<div class="orderbook-label-row-title">
+									<span>Text Color</span>
+								</div>
+								<div class="orderbook-label-row-input" data-lower="0">
+									<input readonly type="text" id="" class="orderbook-label-color-trig" data-ltype="text" name="ctext"></input>
+									<input type="hidden" id="orderbook_label_textcolor" class="orderbook-label-color-input" data-ltype="text"></input>
+									<div class="orderbook-label-color-box-wrap">
+									
+									</div>
+								</div>
+							</div>
+							<div class="orderbook-label-popup-row">
+								<div class="orderbook-label-row-title">
+									<span>Background Color</span>
+								</div>
+								<div class="orderbook-label-row-input" data-lower="1">
+									<input readonly type="text" id="" class="orderbook-label-color-trig" data-ltype="bg" name="cbg"></input>
+									<input type="hidden" id="orderbook_label_bgcolor" class="orderbook-label-color-input" data-ltype="bg"></input>
+									<div class="orderbook-label-color-box-wrap">
+									
+									</div>
+								</div>
+							</div>
+							
+							<div class="orderbook-label-popup-left-bottom">
+								<div class="orderbook-label-popup-confirm-wrap">
+									<span>SAVE</span>
+								</div>
+							</div>
+
+						</div>
+							
+							
+						<div class="orderbook-label-popup-right">
+							<div class="orderbook-label-popup-all-header">
+								<div class="orderbook-label-popup-all-header-right">
+									<div  id="delete_orderbook_label" class="orderbook-label-popup-all-header-cell unselectable">
+										<span>DELETE</span>
+									</div>
+									<div id="add_orderbook_label" class="orderbook-label-popup-all-header-cell unselectable">
+										<span>ADD</span>
+									</div>
+								</div>
+							</div>
+							
+							<div class="orderbook-label-popup-table">
+
+							</div>
+						</div>
+						
+					</div>
+				</div>
+		
+		
+		
+		
+				<div id="tradesequencePopup" class="popup tradesequencePopup">
+				
+				
+					<div class="popup-header">
+						<div class="popup-header-title">
+							<span class="vert-align">Execute Trade Sequence</span>
+						</div>
+						<div class="popup-header-icons">
+							<div class="popup-header-ico">
+								<img class="popup-header-close vert-align" src="img/close.png"></img>
+							</div>
+						</div>
+					</div>
+					
+					
+					<div class="popup-content tradesequencePopup-content">
+					
+						
+						<!--<div class="conf-jumbotron">
+							<div>Disclaimer</div>
+						</div>	-->
+						
+						<div class="tradesequencePopup-summary">
+						
+							<div class="tradesequencePopup-marketName">
+								<span></span>
+							</div>
+						
+							<div class="tradesequencePopup-orderType">
+								<span></span>
+							</div>
+						
+						</div>
+						
+						
+						
+						<div class="tradesequencePopup-overview">
+						
+							<div class="makeofferPopup-form-row">
+								<div class="makeofferPopup-form-label">
+									<span>Price</span>
+								</div>
+								<div class="makeofferPopup-form-input">
+									<input disabled type="text" class="conf-input conf-price">
+									<span class="conf-input-addon refcur-rel"></span>
+								</div>
+							</div>
+						
+							<div class="makeofferPopup-form-row">
+								<div class="makeofferPopup-form-label">
+									<span>Amount</span>
+								</div>
+								<div class="makeofferPopup-form-input">
+									<input disabled type="text" class="conf-input conf-amount">
+									<span class="conf-input-addon refcur-base"></span>
+								</div>
+							</div>
+							
+							
+							<div class="makeofferPopup-form-row">
+								<div class="makeofferPopup-form-label">
+									<span>Total</span>
+								</div>
+								<div class="makeofferPopup-form-input">
+									<input disabled type="text" class="conf-input conf-total">
+									<span class="conf-input-addon refcur-rel"></span>
+								</div>
+							</div>
+							
+							<!--
+							<div class="makeofferPopup-form-row">
+								<div class="makeofferPopup-form-label">
+									<span>Fee</span>
+								</div>
+								<div class="makeofferPopup-form-input">
+									<input disabled type="text" class="conf-input conf-fee">
+									<span class="conf-input-addon"></span>
+								</div>
+							</div>
+							-->
+						
+						</div>
+						
+						
+						<div class="tradesequencePopup-tradesTable">
+							
+							<div class="tradesequencePopup-tradesTable-header">
+								<span>Trades to execute:</span>
+							</div>
+							
+							<table>
+								<thead>
+									<th>Type</th>
+									<th>Market</th>
+									<th>Price</th>
+									<th>Amount</th>
+									<th>Exchange</th>
+								</thead>
+								
+								<tbody>
+									
+								</tbody>
+								
+							</table>
+							
+						</div>
+						
+
+					</div>
+					
+					<div class="popup-buttonArea makeofferPopup-buttonArea">
+						<div class="nbutton-text-wrap">
+							<div class="nbutton-text-outer">
+								<div class="nbutton-text tradesequencePopup-confirm">
+									<div class="nbutton-text-inner">
+										<div class="nbutton-text-title">
+											<span class="vert-align">Confirm</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				
+				</div>
+	
+			</div>
+			
+			
+			<!------------------------- END CONTENT WRAP ----------------------------->
+
+			
+			
+			
+			<!------------------------- START FOOTER ----------------------------->
+			
+			<div id="utilArea">
+			
+				<div class ="util-grid-tabs">
+					<!--<div class="util-grid-tab" data-gridindex="0">
+						<div class="util-grid-tab-title">
+							<span class="vert-align">Default</span>
+						</div>
+						<div class="util-grid-tab-icons">
+							<div class="util-grid-tab-ico">
+								<img class="util-grid-tab-close vert-align" src="img/close.png"></img>
+							</div>
+						</div>
+					</div>-->
+				</div>
+				
+				<div class="util-grid-newTab">
+					<div class="util-grid-newTab-title">
+						<span class="vert-align">Add</span>
+					</div>
+				</div>
+			
+			</div>
+			
+			<!------------------------- END FOOTER ----------------------------->
+			
+			
+		
+			<div id="grid_template" class="template">
+
+				<div class="grid" data-gridindex="0">
+		
+					<div class="grid-arrow grid-arrow-left" data-arrow="left">
+						<img src="img/trileft.png"></img>
+					</div>
+					<div class="grid-arrow grid-arrow-right" data-arrow="right">
+						<img src="img/triright.png"></img>
+					</div>
+					<div class="grid-arrow grid-arrow-top" data-arrow="top">
+						<img src="img/triup.png"></img>
+					</div>
+					<div class="grid-arrow grid-arrow-bottom" data-arrow="bottom">
+						<img src="img/tridown.png"></img>
+					</div>
+					<div class="grid-arrow-middle" data-arrow="middle">
+					</div>
+
+					
+					<div class="tiles">
+					
+					</div>
+					
+					
+
+				</div>
+			</div>
+			
+			
+				
+			<div id="tile_template" class="template">
+				<div class="tile">
+					<div class="tile-arrow-wrap">
+						<div class="tile-arrow tile-arrow-left" data-arrow="left">
+							<img src="img/trileft.png"></img>
+						</div>
+						<div class="tile-arrow tile-arrow-right" data-arrow="right">
+							<img src="img/triright.png"></img>
+						</div>
+						<div class="tile-arrow tile-arrow-top" data-arrow="top">
+							<img src="img/triup.png"></img>
+						</div>
+						<div class="tile-arrow tile-arrow-bottom" data-arrow="bottom">
+							<img src="img/tridown.png"></img>
+						</div>
+						<div class="tile-arrow tile-arrow-middle" data-arrow="middle">
+						</div>
+					</div>
+					
+					<div class="tile-header">
+
+					</div>
+					
+					<div class="tile-cells">
+						<div class="tile-overlay">
+							
+						</div>
+					</div>
+					
+					
+				</div>
+			</div>
+			
+			
+			<div id="cell_template" class="template">
+				<div class="cell">
+					
+				</div>
+			</div>
+			
+			
+			<div id="tile_header_solo_template" class="template">
+			
+				<div class="tile-header-title-wrap">
+					<span class="tile-header-title vert-align"></span>
+				</div>
+				
+				<div class="tile-header-icons">
+					<div class="tile-header-ico">
+						<img class="tile-header-close vert-align" src="img/close.png"></img>
+					</div>
+				</div>
+				
+				<div class ="tile-header-link">
+					<div class="dropdown-list-wrap tile-header-link-dropdown">
+						<div class="dropdown-outer vert-align">
+							<div class="dropdown">
+								<div class="dropdown-inner">
+									<div class="dropdown-title tile-header-link-title">
+										<span class="vert-align">#</span>
+									</div>
+									<!--<div class="dropdown-img">
+										<img src="img/tridownwhite.png" class="vert-align"></img>
+									</div>-->
+								</div>
+							</div>
+						</div>
+						<div class="dropdown-list">
+							<ul class="active">
+								<li class="active" data-val="-1">#</li>
+								<li class="" data-val="1">1</li>
+								<li data-val="2">2</li>
+								<li data-val="3">3</li>
+								<li data-val="4">4</li>
+								<li data-val="5">5</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			
+			
+			
+			<div id="preview_tile_template" class="template">
+			
+				<div class="preview-tile">
+				
+					<div class="preview-tile-header">
+					</div>
+	
+					<div class="preview-tile-content">
+						
+					</div>
+					
+				</div>
+				
+			</div>
+			
+			
+
+			
+			<!------------------------- START CHART ----------------------------->
+
+			<div id="chart_template" class="template grid-trig-template" data-grid="chart">
+			
+				<div class="chart-header" data-chart="">
+					
+					<div class="cell-header-wrap">
+				
+						<div class="chart-search-wrap">
+							<div class="chart-search-input vert-align">
+								<input type="text" name="pair" class="skynet-search" id="main_chart_pair_input"></input>
+								<div class="chart-search-input-img">
+									<div class="chart-search-input-img-inner">
+										<img src="img/search.png" class="vert-align"></img>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="chart-time-wrap">
+							<div class="chart-time-button-outer vert-align">
+								<div class="chart-time-button">
+									<div class="chart-time-button-inner">
+										<div class="chart-time-button-title">
+											<span class="vert-align">25 ticks</span>
+										</div>
+										<div class="chart-time-button-img">
+											<img src="img/tridownwhite.png" class="vert-align"></img>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							
+							<div class="chart-time-dropdown-wrap">
+
+								<ul class="" data-inttype="time">
+									<li class="active" data-val="300">5 minutes</li>
+									<li data-val="900">15 minutes</li>
+									<li data-val="1800">30 minutes</li>
+									<li data-val="3600">1 hour</li>
+									<li data-val="21600">6 hours</li>
+									<li data-val="43200">12 hours</li>
+									<li data-val="86400">1 day</li>
+									<li class="time-change" data-val="tick">Ticks</li>
+								</ul>
+								
+								<ul class="active" data-inttype="tick">
+									<li data-val="5">5 ticks</li>
+									<li data-val="10">10 ticks</li>
+									<li class="active" data-val="25">25 ticks</li>
+									<li data-val="100">100 ticks</li>
+									<li data-val="300">300 ticks</li>
+									<li data-val="500">500 ticks</li>
+									<li class="time-change" data-val="time">Time</li>
+								</ul>
+								
+							</div>
+						</div>
+						
+
+						
+						<div class="chart-config-wrap chart-style">
+							<div class="chart-config-outer vert-align">
+								<div class="chart-config">
+									<div class="chart-config-inner">
+										<div class="chart-config-title">
+											<span class="vert-align ">Config</span>
+										</div>
+										<div class="chart-config-img">
+											<img src="img/tridownwhite.png" class="vert-align"></img>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="dropdown-wrap">
+							
+							</div>
+						</div>
+						
+						
+						<div class="chart-indicators-wrap">
+							<div class="nbutton-icon-wrap chart-indicator-popup-trig">
+								<div class="nbutton-icon-outer vert-align">
+									<div class="nbutton-icon">
+										<div class="nbutton-icon-inner">
+											<div class="nbutton-icon-img vert-align">
+												<img src="img/list.png" class=""></img>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
+						<div class="chart-tools-wrap">
+
+							<div class="nbutton-icon-wrap chart-tools-crosshair">
+								<div class="nbutton-icon-outer vert-align">
+									<div class="nbutton-icon">
+										<div class="nbutton-icon-inner">
+											<div class="nbutton-icon-img vert-align">
+												<img src="img/cross.png" class=""></img>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						
+							<div class="nbutton-icon-wrap chart-tools-line">
+								<div class="nbutton-icon-outer vert-align">
+									<div class="nbutton-icon">
+										<div class="nbutton-icon-inner">
+											<div class="nbutton-icon-img vert-align">
+												<img src="img/squiggle.png" class=""></img>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="nbutton-icon-wrap chart-tools-fib">
+								<div class="nbutton-icon-outer vert-align">
+									<div class="nbutton-icon">
+										<div class="nbutton-icon-inner">
+											<div class="nbutton-icon-img vert-align">
+												<img src="img/list.png" class=""></img>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+					
+					</div>
+					
+				</div>
+				
+				<div class="chart-wrap">
+					<div class="chart-loading">
+						<span>Loading</span>
+					</div>
+					
+					<div class="chart-marketInfo">
+						<div class="chart-marketName">
+							<span></span>
+						</div>
+						
+						<div class="chart-candleInfo">
+							<span></span>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+				
+			<!------------------------- END CHART ----------------------------->
+			
+			
+			
+			<div id="chartTableTemplate" class="template">										
+
+				<div class="chart-table-wrap">
+					<table class="chart-table">
+						<tbody>
+							<tr>
+								<td>Chart Type</td>
+								<td>
+									<ul class="mm-chart-config mm-chart-charttype" data-config="charttype">
+										<li class="active" data-val="candlestick">Candlestick</li>
+										<li data-val="ohlc">OHLC</li>
+										<li data-val="line">Line</li>
+										<li data-val="area">Area</li>
+									</ul>
+								</td>
+							</tr>
+							<tr>
+								<td>Main Indicator</td>
+								<td>
+									<ul class="mm-chart-config mm-chart-indicator" data-config="indicator">
+										<li class="active" data-val="ema">EMA</li>
+										<li data-val="sma">SMA</li>
+										<li data-val="bollin">BBands</li>
+										<li data-val="none">None</li>
+									</ul>
+								</td>
+							</tr>
+							<!--<tr>
+								<td>Time Scale</td>
+								<td>
+									<ul class="mm-chart-config mm-chart-timescale" data-config="timescale">
+										<li class="active" data-val="linear">Linear</li>
+										<li data-val="logarithmic">Logarithmic</li>
+									</ul>
+								</td>
+							</tr>-->
+							<tr>
+								<td>Depth</td>
+								<td>
+									<ul class="mm-chart-config mm-chart-depth" data-config="depth">
+										<li data-val="0.00">0%</li>
+										<li data-val="0.01">1%</li>
+										<li data-val="0.02">2%</li>
+										<li class="active" data-val="0.05">5%</li>
+										<li data-val="0.10">10%</li>
+									</ul>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+				
+
+			<!------------------------- START ORDERBOOK WRAP----------------------------->
+
+			<div id="orderbook_template" class="template grid-trig-template" data-grid="orderbook">
+			
+				<div class="orderbook-wrap">
+				
+					<div class="orderbook-header">		
+						<div class="cell-header-wrap">
+						
+							
+							<div class="nSearch-wrap orderbook-search-wrap">
+								<div class="nSearch-input vert-align">
+									<input readonly type="text" value="No market loaded" "name="pair" class="skynet-search"></input>
+									<div class="nSearch-input-img">
+										<div class="nSearch-input-img-inner orderbook-search-popup-trig">
+											<img src="img/search.png" class="vert-align-horiz-align"></img>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
+							<div class="dropdown-list-wrap orderbook-exchange-dropdown">
+								<div class="dropdown-outer vert-align">
+									<div class="dropdown">
+										<div class="dropdown-inner">
+											<div class="dropdown-title">
+												<span class="vert-align orderbook-exchange-dropdown-title">All exchanges</span>
+											</div>
+											<div class="dropdown-img">
+												<img src="img/tridownwhite.png" class="vert-align"></img>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dropdown-list">
+									<ul class="active">
+										<li class="active" data-val="active">All exchanges</li>
+									</ul>
+								</div>
+							</div>
+							
+						
+							<div class="dropdown-list-wrap dropdown-list-mult-wrap orderbook-label-dropdown">
+								<div class="dropdown-outer vert-align">
+									<div class="dropdown">
+										<div class="dropdown-inner">
+											<div class="dropdown-title">
+												<span class="vert-align orderbook-exchange-dropdown-title">Labels</span>
+											</div>
+											<div class="dropdown-img">
+												<img src="img/tridownwhite.png" class="vert-align"></img>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dropdown-list no-hover">
+									<ul class="active">
+									</ul>
+								</div>
+							</div>
+							
+							
+							
+							<div class="orderbook-header-status">
+								<span class="vert-align"><span>Last updated: </span><span class="orderbook-lastUpdated">0s</span></span>
+							</div>
+						
+						</div>
+					</div>
+					
+					
+					
+					<!--<div class="orderbook-summary">
+					
+					</div>-->
+					
+					<div class="orderbook-body">
+					
+						<div class="orderbook-statusText">
+							<span>Loading...</span>
+						</div>
+								
+						<div class="orderbook buybook">
+							
+							<div class="orderbook-bookLabels">
+								<div class="orderbook-bookLabels-row">
+									<span class="orderbook-bookLabels-col refcur-rel">Total</span>
+									<span class="orderbook-bookLabels-col refcur-base">Volume</span>
+									<span class="orderbook-bookLabels-col">Price</span>
+									<span class="orderbook-bookLabels-col orderbook-bookLabels-col-extra">Sum</span>
+								</div>
+							</div>
+									
+							<div class="bookname bookname-buybook" data-book="buyBook">
+								<div class="empty-orderbook">
+									<span>No bids</span>
+								</div>
+								<div class="twrap"></div>
+							</div>
+							
+						</div>
+						
+						
+						<div class="orderbook sellbook">
+							
+							<div class="orderbook-bookLabels">
+								<div class="orderbook-bookLabels-row">
+									<span class="orderbook-bookLabels-col">Price</span>
+									<span class="orderbook-bookLabels-col refcur-base">Volume</span>
+									<span class="orderbook-bookLabels-col refcur-rel">Total</span>
+									<span class="orderbook-bookLabels-col orderbook-bookLabels-col-extra">Sum</span>
+								</div>
+							</div>
+									
+							<div class="bookname bookname-sellbook" data-book="sellBook">
+								<div class="empty-orderbook">
+									<span>No asks</span>
+								</div>
+								<div class="twrap"></div>
+							</div>
+							
+								
+						</div>
+						
+					</div>
+					
+					<div class="orderbox-all">
+						<div class="orderbox-wrap orderbox-wrap-buy">
+						
+							<div class="orderbox-buy orderbox">
+												
+								<div class="orderbox-body">
+								
+								
+									<div class="orderbox-config">
+										<div class="orderbox-balance">
+											<div class="orderbox-balance-title">
+												<span class="">Quote:&nbsp;</span>
+											</div>
+											
+											<div class="orderbox-balance-val">
+												<span class="balance-rel">0.00</span>
+											</div>
+										</div>
+										<div class="dropdown-list-wrap orderbox-exchange-dropdown">
+											<div class="dropdown-outer vert-align">
+												<div class="dropdown">
+													<div class="dropdown-inner">
+														<div class="dropdown-title">
+															<span class="orderbox-exchange-title">nxtae</span>
+														</div>
+														<div class="dropdown-img">
+															<img src="img/tridownwhite.png" class="vert-align"></img>
+														</div>
+													</div>
+												</div>
+												
+												<div class="dropdown-list">
+													<ul class="active" data-inttype="exchange">
+														<li class="" data-val="InstantDEX">InstantDEX</li>
+														<li class="active" data-val="nxtae">nxtae</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								
+									<div class="orderbox-formWrap orderbox-inputArea">
+										<form role="form" class="placeBidForm placeOrderForm" autocomplete="off">
+
+											<div class="order-form-row-outer">
+												<div class="order-form-row order-form-price">
+													<div class="order-form-label">
+														<span>PRICE</span>
+												</div>
+													<div class="order-form-input">
+														<input type="text" name="price" placeholder=""></input>
+													</div>
+													<div class="order-form-refcur">
+														<span class="refcur-rel"></span>
+													</div>
+												</div>
+											</div>
+
+											<div class="order-form-row-outer">
+												<div class="order-form-row order-form-amount">
+													<div class="order-form-label">
+														<span>AMOUNT</span>
+													</div>
+													<div class="order-form-input">
+														<input type="text" name="volume" placeholder=""></input>
+													</div>
+													<div class="order-form-refcur">
+														<span class="refcur-base"></span>
+													</div>
+												</div>
+											</div>
+
+											<div class="order-form-row-outer">
+												<div class="order-form-row order-form-total">
+													<div class="order-form-label">
+														<span>TOTAL</span>
+													</div>
+													<div class="order-form-input">
+														<input type="text" name="total" placeholder=""></input>
+													</div>
+													<div class="order-form-refcur">
+														<span class="refcur-rel"></span>
+													</div>
+												</div>
+											</div>
+
+										</form>
+									</div>
+									
+									<div class="orderbox-buttonArea">
+										<div class="orderbox-order-button orderbox-order-button-buy fadeSlowIndy unselectable" data-method="placebid">
+											<span class=""><span>Buy </span><span class="refcur-base"></span></span>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+							
+						</div>
+						
+						<div class="orderbox-wrap orderbox-wrap-sell">
+						
+							<div class="orderbox-sell orderbox">
+									
+										
+								<div class="orderbox-body">
+								
+									<div class="orderbox-config">
+										<div class="orderbox-balance">
+											<div class="orderbox-balance-title">
+												<span class="">Base:&nbsp;</span>
+											</div>
+											
+											<div class="orderbox-balance-val">
+												<span class="balance-rel">0.00</span>
+											</div>
+										</div>
+										<div class="dropdown-list-wrap orderbox-exchange-dropdown">
+											<div class="dropdown-outer vert-align">
+												<div class="dropdown">
+													<div class="dropdown-inner">
+														<div class="dropdown-title">
+															<span class="vert-align orderbox-exchange-title">nxtae</span>
+														</div>
+														<div class="dropdown-img">
+															<img src="img/tridownwhite.png" class="vert-align"></img>
+														</div>
+													</div>
+												</div>
+												
+												<div class="dropdown-list">
+													<ul class="active" data-inttype="exchange">
+														<li class="" data-val="InstantDEX">InstantDEX</li>
+														<li class="active" data-val="nxtae">nxtae</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								
+									<div class="orderbox-formWrap orderbox-inputArea">
+										<form role="form" class="placeAskForm placeOrderForm" autocomplete="off">
+
+											<div class="order-form-row-outer">
+												<div class="order-form-row order-form-price">
+													<div class="order-form-label">
+														<span>PRICE</span>
+													</div>
+													<div class="order-form-input">
+														<input type="text" name="price" placeholder=""></input>
+													</div>
+													<div class="order-form-refcur">
+														<span class="refcur-rel"></span>
+													</div>
+												</div>
+											</div>
+
+											<div class="order-form-row-outer">
+												<div class="order-form-row order-form-amount">
+													<div class="order-form-label">
+														<span>AMOUNT</span>
+													</div>
+													<div class="order-form-input">
+														<input type="text" name="volume" placeholder=""></input>
+													</div>
+													<div class="order-form-refcur">
+														<span class="refcur-base"></span>
+													</div>
+												</div>
+											</div>
+
+											<div class="order-form-row-outer">
+												<div class="order-form-row order-form-total">
+													<div class="order-form-label">
+														<span>TOTAL</span>
+													</div>
+													<div class="order-form-input">
+														<input type="text" name="total" placeholder=""></input>
+													</div>
+													<div class="order-form-refcur">
+														<span class="refcur-rel"></span>
+													</div>
+												</div>
+											</div>
+
+										</form>
+									</div>
+									
+									<div class="orderbox-buttonArea">
+										<div class="orderbox-order-button orderbox-order-button-sell fadeSlowIndy unselectable" data-method="placeask">
+											<span class=""><span>Sell </span><span class="refcur-base"></span></span>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+			
+			<!------------------------- END ORDERBOOK WRAP----------------------------->
+
+			
+			
+			<!------------------------- START ORDERBOOK VERTICAL----------------------------->
+
+			
+			<div id="orderbook_templatee" class="template grid-trig-template" data-grid="orderbookk">
+			
+				<div class="orderbook-wrap">
+				
+					<div class="orderbook-header">
+						<div class="cell-header-wrap">
+						
+							
+							<div class="nSearch-wrap orderbook-search-wrap">
+								<div class="nSearch-input vert-align">
+									<input readonly type="text" value="No market loaded" "name="pair" class="skynet-search"></input>
+									<div class="nSearch-input-img">
+										<div class="nSearch-input-img-inner orderbook-search-popup-trig">
+											<img src="img/search.png" class="vert-align-horiz-align"></img>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							
+							<div class="dropdown-list-wrap orderbook-exchange-dropdown">
+								<div class="dropdown-outer vert-align">
+									<div class="dropdown">
+										<div class="dropdown-inner">
+											<div class="dropdown-title">
+												<span class="vert-align orderbook-exchange-dropdown-title">All exchanges</span>
+											</div>
+											<div class="dropdown-img">
+												<img src="img/tridownwhite.png" class="vert-align"></img>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dropdown-list">
+									<ul class="active">
+										<li class="active" data-val="active">All exchanges</li>
+									</ul>
+								</div>
+							</div>
+							
+						
+							<div class="dropdown-list-wrap dropdown-list-mult-wrap orderbook-label-dropdown">
+								<div class="dropdown-outer vert-align">
+									<div class="dropdown">
+										<div class="dropdown-inner">
+											<div class="dropdown-title">
+												<span class="vert-align orderbook-exchange-dropdown-title">Labels</span>
+											</div>
+											<div class="dropdown-img">
+												<img src="img/tridownwhite.png" class="vert-align"></img>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dropdown-list no-hover">
+									<ul class="active">
+									</ul>
+								</div>
+							</div>
+							
+							
+							
+							<div class="orderbook-header-status">
+								<span class="vert-align"><span>Last updated: </span><span class="orderbook-lastUpdated">0s</span></span>
+							</div>
+						
+						</div>
+					</div>
+					
+					
+
+					
+					<div class="orderbook-vertical-body">
+					
+						<div class="orderbook-vertical-bookLabels">
+							<div class="orderbook-vertical-bookLabels-row">
+								<span class="orderbook-vertical-bookLabels-col refcur-rel">Total</span>
+								<span class="orderbook-vertical-bookLabels-col refcur-base">Volume</span>
+								<span class="orderbook-vertical-bookLabels-col">Price</span>
+								<span class="orderbook-vertical-bookLabels-col orderbook-bookLabels-col-extra">Sum</span>
+							</div>
+						</div>
+				
+						<div class="orderbook-vertical buybook">
+							
+							<div class="bookname bookname-buybook" data-book="buyBook">
+								<div class="empty-orderbook">
+									<span>No bids</span>
+								</div>
+								<div class="twrap"></div>
+							</div>
+							
+						</div>
+						
+						
+						<div class="orderbook-vertical sellbook">
+									
+							<div class="bookname bookname-sellbook" data-book="sellBook">
+								<div class="empty-orderbook">
+									<span>No asks</span>
+								</div>
+								<div class="twrap"></div>
+							</div>
+							
+								
+						</div>
+						
+					</div>
+					
+					
+				</div>
+				
+			</div>
+			
+			
+			
+			<div id="marketHistory_template" class="template grid-trig-template" data-grid="marketHistory">
+			
+				<div class="cm-marketHistory-wrap">
+				
+					<div class="cm-marketHistory-header">
+						<div class="nSearch-wrap cm-marketHistory-search-wrap">
+							<div class="nSearch-input vert-align">
+								<input readonly type="text" value="No market loaded" name="pair" class="skynet-search"></input>
+								<div class="nSearch-input-img">
+									<div class="nSearch-input-img-inner cm-marketHistory-search-popup-trig">
+										<img src="img/search.png" class="vert-align-horiz-align"></img>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="refresh-wrap cm-orders-refresh-wrap">
+							<img src="img/refresh.png"></img>
+						</div>
+					</div>
+					
+					<div class="cm-marketHistory-content">
+						<div class="cm-marketHistory-table-wrap">
+							<table class="cm-marketHistory-table">
+								<thead>
+									<tr>
+										<th>DATE</th>
+										<th>PRICE</th>
+										<th>AMOUNT</th>
+										<th>EXCHANGE</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			
+			</div>
+			
+			
+			<div id="orders_template" class="template grid-trig-template" data-grid="orders">
+			
+				<div class="cm-openorders-wrap">
+				
+					<div class="cm-openorders-header">
+						<div class="nSearch-wrap cm-openorders-search-wrap">
+							<div class="nSearch-input vert-align">
+								<input readonly type="text" value="No market loaded" name="pair" class="skynet-search"></input>
+								<div class="nSearch-input-img">
+									<div class="nSearch-input-img-inner cm-openorders-search-popup-trig">
+										<img src="img/search.png" class="vert-align-horiz-align"></img>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="refresh-wrap cm-orders-refresh-wrap">
+							<img src="img/refresh.png"></img>
+						</div>
+					</div>
+					
+					<div class="cm-openorders-content">
+						<div class="cm-openorders-table-wrap">
+							<table class="cm-openorders-table sortable">
+								<thead>
+									<tr>
+										<th>TYPE</th>
+										<th>PRICE</th>
+										<th>AMOUNT</th>
+										<th>TOTAL</th>
+										<th>EXCHANGE</th>
+										<th>STATUS</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			
+			</div>
+			
+			
+			
+			<div id="trades_template" class="template grid-trig-template" data-grid="trades">
+			
+				<div class="cm-trades-wrap">
+				
+					<div class="cm-trades-header">
+						<div class="nSearch-wrap cm-trades-search-wrap">
+							<div class="nSearch-input vert-align">
+								<input readonly type="text" value="No market loaded" name="pair" class="skynet-search"></input>
+								<div class="nSearch-input-img">
+									<div class="nSearch-input-img-inner cm-trades-search-popup-trig">
+										<img src="img/search.png" class="vert-align-horiz-align"></img>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="cm-trades-content">
+						<div class="cm-trades-table-wrap">
+							<table class="cm-trades-table sortable">
+								<thead>
+									<tr>
+										<th>TIME</th>
+										<th>TYPE</th>
+										<th>PRICE</th>
+										<th>AMOUNT</th>
+										<th>TOTAL</th>
+										<th>EXCHANGE</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			
+			</div>
+					
+			
+			
+			<div id="watchlist_template" class="template grid-trig-template" data-grid="watchlist">
+				<div class="watchlist-wrap">
+				
+					<div class="watchlist-header">
+
+						<div class="nbutton-icon-wrap watchlist-add">
+						
+							<div class="nbutton-icon-outer vert-align">
+								<div class="nbutton-icon">
+									<div class="nbutton-icon-inner">
+										<div class="nbutton-icon-img vert-align">
+											<img src="img/cross.png" class=""></img>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="refresh-wrap watchlist-refresh-wrap">
+							<img src="img/refresh.png"></img>
+						</div>
+					</div>
+					
+					<div class="watchlist-table-wrap">
+					
+						<table class="nTable" data-table="watchlist">
+							<thead>
+								<tr>
+									<th>MARKET</th>
+									<th>BID</th>
+									<th>ASK</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					
+					</div>
+					
+					<div class="generic-loading watchlist-loading">
+						<span>Loading...</span>
+					</div>
+					
+				</div>
+			</div>
+			
+			
+			
+			<div id="balances_template" class="template grid-trig-template" data-grid="balances">
+			
+				<div class="cm-balances-wrap">
+					<div class="cm-balances-header">
+						<div class="nSearch-wrap cm-balances-search-wrap">
+							<div class="nSearch-input vert-align">
+								<input readonly type="text" value="No market loaded" name="pair" class="skynet-search"></input>
+								<div class="nSearch-input-img">
+									<div class="nSearch-input-img-inner cm-balances-search-popup-trig">
+										<img src="img/search.png" class="vert-align-horiz-align"></img>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="refresh-wrap cm-balances-refresh-wrap">
+							<img src="img/refresh.png"></img>
+						</div>
+					</div>
+					
+					<div class="cm-balances-content">
+					
+						<div class="cm-balances-base cm-balances-sing">
+						
+							<div class="cm-balances-sing-header">
+								<div class="cm-balances-sing-title">
+									<span>Base</span>
+								</div>
+								<div class="cm-balances-sing-balanceVal">
+									<span>0.00</span>
+								</div>
+							</div>
+							
+							<div class="cm-balances-sing-table-wrap">
+								<table class="cm-balances-sing-table">
+									<thead>
+										<tr>
+											<th>EXCHANGE</th>
+											<th>UNAVAIL.</th>
+											<th>AVAIL.</th>
+											<th>TOTAL</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							
+						</div>
+						
+						<div class="cm-balances-rel cm-balances-sing">
+						
+							<div class="cm-balances-sing-header">
+								<div class="cm-balances-sing-title">
+									<span>Quote</span>
+								</div>
+								<div class="cm-balances-sing-balanceVal">
+									<span>0.00</span>
+								</div>
+							</div>
+							
+							<div class="cm-balances-sing-table-wrap">
+								<table class="cm-balances-sing-table">
+									<thead>
+										<tr>
+											<th>EXCHANGE</th>
+											<th>UNAVAIL.</th>
+											<th>AVAIL.</th>
+											<th>TOTAL</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+							
+						</div>
+					
+					</div>
+
+				</div>
+			
+			</div>
+			
+			
+			<div id="util_grid_tab_template" class="template">
+			
+				<div class="util-grid-tab" data-gridindex="">
+					<div class="util-grid-tab-title">
+						<span class="vert-align">Default</span>
+					</div>
+					<div class="util-grid-tab-icons">
+						<div class="util-grid-tab-ico">
+							<img class="util-grid-tab-close vert-align" src="img/close.png"></img>
+						</div>
+					</div>
+				</div>
+					
+			</div>
+			
+			
+			
+			<div id="series_tab_template" class="template">
+			
+				<div class="series-tab">
+					<div class="series-tab-title">
+						<span class="vert-align">Test</span>
+					</div>
+					<div class="series-tab-icons">
+						<div class="series-tab-ico">
+							<img class="series-tab-close vert-align" src="img/close.png"></img>
+						</div>
+						<div class="series-tab-ico">
+							<img class="series-tab-settings vert-align" src="img/hammer.png"></img>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+				
+
+			
+			
+		</div>
+		
+
+
+		
+	</div>
+
+
+ <!--   ----------------------------------------------->
+    <script src="js/3rdparty/jquery-2.1.1.js"></script>
+	<script src="js/3rdparty/jquery.tooltipster.min.js"></script>
+	<script src="js/3rdparty/jquery.growl.js"></script>
+	<script src="js/3rdparty/jquery.mousewheel.min.js"></script>
+	<script src="js/3rdparty/jquery-ui.min.js"></script>
+	<script src="js/3rdparty/jquery.ui.autocomplete.html.js"></script>
+	<script src="js/3rdparty/perfect-scrollbar.jquery.js" type="text/javascript"></script>
+	<script src="js/3rdparty/spectrum.js"></script>
+	
+	<script src="js/util/nxtaddress.js" type="text/javascript"></script>
+
+	<script src="js/idex.js" type="text/javascript"></script>
+	<script src="js/idex.binds.js" type="text/javascript"></script>
+	<script src="js/idex.ajax.js" type="text/javascript"></script>
+	<script src="js/idex.util.js" type="text/javascript"></script>
+	<script src="js/idex.tables.js" type="text/javascript"></script>
+	
+	<script src="js/idex.user.js" type="text/javascript"></script>
+	
+	<script src="js/idex.exchanges.js" type="text/javascript"></script>
+	<script src="js/idex.exchanges.nxtae.js" type="text/javascript"></script>
+	<script src="js/idex.exchanges.external.js" type="text/javascript"></script>
+	
+	<script src="js/idex.market.js" type="text/javascript"></script>
+	<script src="js/idex.coin.js" type="text/javascript"></script>
+
+
+	<script src="js/idex.cbalances.js" type="text/javascript"></script>
+	<script src="js/idex.copenorders.js" type="text/javascript"></script>
+	<script src="js/idex.ctrades.js" type="text/javascript"></script>
+	<script src="js/idex.cmarkethistory.js" type="text/javascript"></script>
+	<script src="js/idex.cwatchlist.js" type="text/javascript"></script>
+	
+	<script src="js/idex.orderbox.js" type="text/javascript"></script>
+	<script src="js/idex.orderbox.binds.js" type="text/javascript"></script>
+	
+	<script src="js/idex.makeoffer.js" type="text/javascript"></script>
+
+	<script src="js/idex.orderbook.js" type="text/javascript"></script>
+	<script src="js/idex.orderbook.utils.js" type="text/javascript"></script>
+	<script src="js/idex.orderbook.async.js" type="text/javascript"></script>
+	<script src="js/idex.orderbook.binds.js" type="text/javascript"></script>
+	<script src="js/idex.orderbook.formatorders.js" type="text/javascript"></script>
+	<script src="js/idex.orderbook.updateorders.js" type="text/javascript"></script>
+	<script src="js/idex.orderbook.labels.js" type="text/javascript"></script>
+	
+	<script src="js/sleuthgrids/sleuthgrids.js" type="text/javascript"></script>
+	<script src="js/sleuthgrids/sleuthgrids.binds.js" type="text/javascript"></script>
+	<script src="js/sleuthgrids/sleuthgrids.cell.js" type="text/javascript"></script>
+	<script src="js/sleuthgrids/sleuthgrids.tile.js" type="text/javascript"></script>
+	<script src="js/sleuthgrids/sleuthgrids.utils.js" type="text/javascript"></script>
+
+	<script src="js/idex.grid.cellHandlers.js" type="text/javascript"></script>
+
+	<script src="js/sleuthcharts/d3.min.js" type="text/javascript"></script>
+	<script src="js/sleuthcharts/sleuthcharts.js" type="text/javascript"></script>
+	<script src="js/sleuthcharts/sleuthcharts.utils.js" type="text/javascript"></script>
+	<script src="js/sleuthcharts/sleuthcharts.axis.js" type="text/javascript"></script>
+	<script src="js/sleuthcharts/sleuthcharts.data.js" type="text/javascript"></script>
+	<!--<script src="js/sleuthcharts/sleuthcharts.drawing.js" type="text/javascript"></script>-->
+	<script src="js/sleuthcharts/sleuthcharts.eventHandler.js" type="text/javascript"></script>
+	<script src="js/sleuthcharts/sleuthcharts.points.js" type="text/javascript"></script>
+	<script src="js/sleuthcharts/sleuthcharts.render.js" type="text/javascript"></script>
+	<script src="js/sleuthcharts/sleuthcharts.series.js" type="text/javascript"></script>
+	
+	<script src="js/idex.chart.js" type="text/javascript"></script>
+
+
+	<script src="js/idex.autocomplete.js" type="text/javascript"></script>
+	<script src="js/idex.scrollbar.js" type="text/javascript"></script>
+	<script src="js/idex.dom.js" type="text/javascript"></script>
+
+
+
+</body>
+
+</html>
