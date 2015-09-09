@@ -451,6 +451,18 @@ app.post('/supernet', function(req, res){
     });
 });
 
+app.post('/IDEXsupernet', function(req, res){
+    console.log(JSON.stringify(req.body));
+    btcd.supernet(JSON.stringify(req.body), function(err,data){
+        var response = {
+            error: JSON.parse(err ? err.message : null),
+            result: data
+        };
+        console.log(JSON.stringify(data));
+        res.send(JSON.stringify(response));
+    });
+});
+
 app.post('/nxt', function(req,res){
     var reqBody = querystring.stringify(req.body);
     var postOptions = {
