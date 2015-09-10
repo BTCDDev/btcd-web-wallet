@@ -110,7 +110,9 @@ var IDEX = (function(IDEX, $, undefined)
 				{
 					try
 					{
-						data = $.parseJSON(data);
+						//data = $.parseJSON(data);
+				data = (JSON.parse(data));
+				//console.log("got: " + JSON.stringify(data));
 					}
 					catch(e)
 					{

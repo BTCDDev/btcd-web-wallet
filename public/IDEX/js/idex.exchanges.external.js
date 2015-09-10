@@ -355,7 +355,6 @@ var IDEX = (function(IDEX, $, undefined)
 	function normalizeBalances(rawBalances, exchangeName)
 	{
 		var balances = {};
-		
 		if (exchangeName == "poloniex")
 		{
 			for (key in rawBalances)
@@ -385,10 +384,29 @@ var IDEX = (function(IDEX, $, undefined)
 					balance.available = rawBalance.Available;
 					balance.total = rawBalance.Balance
 					balance.unavailable = IDEX.toSatoshi(balance.total - balance.available);
-					balance.name = rawBalance.Currency;
+					balance.name = rawBalance.Currency.toUpperCase();
 					balance.exchange = exchangeName;
 					
 					balances[rawBalance.Currency] = balance;
+				}
+			}
+		}
+		else if(exchangeName == "btce")
+		{
+			if (rawBalances.success == 1)
+			{
+				var result = rawBalances.return.funds;
+				for (currency in result)
+				{
+					var cur = currency.toUpperCase();
+					var rawBalance = result[currency];
+					var balance = {};
+					balance.available = rawBalance;
+					balance.total = rawBalance
+					balance.unavailable = IDEX.toSatoshi(0);
+					balance.name = cur;
+					balance.exchange = exchangeName;
+					balances[balance.name] = balance;
 				}
 			}
 		}
