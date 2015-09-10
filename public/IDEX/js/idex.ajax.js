@@ -59,23 +59,21 @@ var IDEX = (function(IDEX, $, undefined)
 			waitTime = 300 + (q.length * 300)
 						
 				
-		if (!isNXT){
-			params.url = snURL;
-            params.plugin = "InstantDEX";         
-        }
-        /*else
+		/*if (!isNXT)
+			params.plugin = "InstantDEX";
+        else
 			params.plugin = "nxt";*/
 		
-		/*if (!isNXT)
+		if (!isNXT)
 		{
-			params = {"stringified":params}
-			params = JSON.stringify(params);
+			//params = {"stringified":params}
+			//params = JSON.stringify(params);
 			url = strURL;
 		}
 		else
 		{
 			
-		}*/
+		}
 		//console.log(JSON.stringify(params));
 		var ajaxSettings = 
 		{
