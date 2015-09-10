@@ -459,7 +459,7 @@ app.post('/IDEXsupernet', function(req, res){
             result: data
         };
         console.log(JSON.stringify(data));
-        res.send(JSON.stringify(response));
+        res.send(data);
     });
 });
 
