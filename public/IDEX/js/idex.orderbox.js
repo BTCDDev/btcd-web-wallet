@@ -149,6 +149,7 @@ var IDEX = (function(IDEX, $, undefined)
 		//orderbox.buyBox.balanceTitleDom.text(orderbox.relAsset.name + ": ");
 		//orderbox.sellBox.balanceTitleDom.text(orderbox.baseAsset.name + ": ");
 		orderbox.buyBox.balanceValDom.text("Loading...");
+        console.log('changemarket: ' + orderbox.market);
 		orderbox.sellBox.balanceValDom.text("Loading...");
 
 		
@@ -181,7 +182,6 @@ var IDEX = (function(IDEX, $, undefined)
 	IDEX.Orderbox.prototype.updateOrderBoxBalance = function()
 	{
 		var orderbox = this;
-		
 		if (orderbox.hasMarket)
 		{
 			orderbox.buyBox.updateOrderBoxBalance();

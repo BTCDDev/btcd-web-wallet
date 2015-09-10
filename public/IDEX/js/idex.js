@@ -116,7 +116,7 @@ var IDEX = (function(IDEX, $, undefined)
 		//params = {"method":"allexchanges"}
 		IDEX.sendPost(params, false).done(function(data)
 		{
-			console.log(data)
+			//console.log(data)
 			dfd.resolve()
 			
 		}).fail(function()

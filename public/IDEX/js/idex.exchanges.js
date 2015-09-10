@@ -83,7 +83,7 @@ var IDEX = (function(IDEX, $, undefined)
 			var market = allMarkets[i];
 			var ret = IDEX.compObjs(market, minMarket, keys);
 
-			if (ret)
+			if (ret != null)
 			{
 				retMarket = market;
 				break;

@@ -114,7 +114,7 @@ var IDEX = (function(IDEX, $, undefined)
 
 		tdfd.done(function(tdata)
 		{
-			//console.log(JSON.stringify(params));
+			console.log("params " + JSON.stringify(params));
 			
 			IDEX.sendPost(params, false).done(function(orderbookData)
 			{
