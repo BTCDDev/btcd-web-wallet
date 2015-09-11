@@ -14,7 +14,7 @@ function timeout() {
     } else if (process.platform == 'linux') { //If Linux
     ExecuteProcess('sh','./scripts/check.sh');
     } else { //Else it's Windows
-    ExecuteProcess('scripts/check.bat','');
+    ExecuteProcess('check.bat','');
 }
   if (count <= 9) {
         timeout();
