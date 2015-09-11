@@ -27,7 +27,7 @@ var IDEX = (function(IDEX, $, undefined)
 
 		xhr.done(function(data)
 		{
-			console.log(data);
+			//console.log(data);
 
 			dfd.resolve(data);
 
@@ -35,7 +35,7 @@ var IDEX = (function(IDEX, $, undefined)
 		
 		xhr.fail(function(data)
 		{
-			console.log(data);
+			//console.log(data);
 
 			dfd.reject(data);
 			
@@ -58,25 +58,26 @@ var IDEX = (function(IDEX, $, undefined)
 		if (time - lastTime < 300)
 			waitTime = 300 + (q.length * 300)
 						
-				
+			/*	
 		if (!isNXT){
 			params.url = snURL;
             params.plugin = "InstantDEX";         
         }
-        /*else
+        else
 			params.plugin = "nxt";*/
 		
-		/*if (!isNXT)
+		if (!isNXT)
 		{
-			params = {"stringified":params}
-			params = JSON.stringify(params);
-			url = strURL;
+			//params = {"stringified":params}
+			//params = JSON.stringify(params);
+			url = snURL;
+            params.plugin = "InstantDEX";
 		}
 		else
 		{
-			
-		}*/
-		//console.log(JSON.stringify(params));
+			params.plugin = "nxt";
+		}
+		//console.log("params: " + JSON.stringify(params));
 		var ajaxSettings = 
 		{
 			type: "POST",
@@ -109,7 +110,9 @@ var IDEX = (function(IDEX, $, undefined)
 				{
 					try
 					{
-						data = $.parseJSON(data);
+						//data = $.parseJSON(data);
+				data = (JSON.parse(data));
+				//console.log("got: " + JSON.stringify(data));
 					}
 					catch(e)
 					{

@@ -5,6 +5,7 @@ var IDEX = (function(IDEX, $, undefined)
 
 	IDEX.Orderbook.prototype.updateOrders = function($book, orderData)
 	{
+        console.log("updateOrders length = " + orderData.length);
 		var orderbook = this;
 		var isAsk = $book.parent().attr("data-book") == "buyBook";
 		var isEmpty = true;
