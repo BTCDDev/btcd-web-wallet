@@ -21,7 +21,7 @@ function(ko, dialog, WalletStatus, Send, Receive, History, Console, Modal, Walle
     };
 
     walletType.prototype.unlockWallet = function(){
-        new WalletPassphrase().userPrompt(false, 'Wallet unlock', 'This action will unlock the wallet for sending','OK')
+        new WalletPassphrase({canSpecifyStaking:true}).userPrompt(false, 'Wallet unlock', 'This action will unlock the wallet for sending','OK')
             .done(function(result){
                 console.log(result);
                 dialog.notification("Wallet unlocked");
@@ -104,7 +104,7 @@ function(ko, dialog, WalletStatus, Send, Receive, History, Console, Modal, Walle
     };
 
     walletType.prototype.promptToUnlockForStaking = function(){
-        new WalletPassphrase().userPrompt(false, 'Wallet unlock', 'Unlock the wallet','OK')
+        new WalletPassphrase({canSpecifyStaking:true}).userPrompt(false, 'Wallet unlock', 'Unlock the wallet','OK')
             .done(function(result){
                 console.log(result);
             })
