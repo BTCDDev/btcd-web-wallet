@@ -8,14 +8,15 @@ if (process.platform == 'darwin') { //If Mac OS X
     filepath = process.env.APPDATA + '/BitcoinDark/BitcoinDark.conf';
 }
 
-if (fs.existsSync(filepath) == false) { console.log('Conf file does not exists. Copying default conf file...');
+//This code doesn't seems is being used. Just keeping it for future refrences.
+/*if (fs.existsSync(filepath) == false) { console.log('Conf file does not exists. Copying default conf file...');
 fs.copy('btcd/BitcoinDark.conf', filepath, { replace: false }, function (err) {
   if (err) {
     throw err;
   }
   console.log('Copied btcd/BitcoinDark.conf to ' + filepath);
 });
-}
+}*/
 
 conf_data = fs.readFileSync(filepath, 'utf8', function (err,data) {
   if (err) {

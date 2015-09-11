@@ -10,11 +10,11 @@ function timeout() {
         count += 1;
   //console.log(count);
   if (process.platform == 'darwin') { //If Mac OS X
-    ExecuteProcess('sh','./check.sh');
+    ExecuteProcess('sh','./scripts/check.sh');
     } else if (process.platform == 'linux') { //If Linux
-    ExecuteProcess('sh','./check.sh');
+    ExecuteProcess('sh','./scripts/check.sh');
     } else { //Else it's Windows
-    ExecuteProcess('check.bat','');
+    ExecuteProcess('scripts/check.bat','');
 }
   if (count <= 9) {
         timeout();
