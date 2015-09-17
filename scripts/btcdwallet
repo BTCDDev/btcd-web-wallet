@@ -56,6 +56,15 @@ sudo apt-get -y install git curl libc6 libboost-program-options1.55.0 libboost-t
 		sudo apt-get upgrade
 		sudo apt-get install libstdc++6
 	fi
+	if [ ! -d "/opt/BTCDWallet" ]; then
+		sudo mkdir /opt/BTCDWallet
+	elif [ -d "/opt/BTCDWallet" ]; then
+		sudo rm -rf /opt/BTCDWallet
+		sudo mkdir /opt/BTCDWallet
+	fi
+sudo cp -av ./* /opt/BTCDWallet
+sudo ln -s /opt/BTCDWallet/btcdwallet /usr/bin/btcdwallet
+sudo ln -s /opt/BTCDWallet/scripts/BitcoinDark.desktop /usr/share/applications/BitcoinDark.desktop
 elif  [ "$1" = "-help" -o "$1" = "-h" -o "$1" = "--help" ]; then
 	usage
 else
