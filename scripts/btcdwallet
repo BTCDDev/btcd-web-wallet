@@ -64,7 +64,7 @@ sudo apt-get -y install git curl libc6 libboost-program-options1.55.0 libboost-t
 	fi
 sudo cp -av ./* /opt/BTCDWallet
 sudo ln -s /opt/BTCDWallet/btcdwallet /usr/bin/btcdwallet
-sudo ln -s /opt/BTCDWallet/scripts/BitcoinDark.desktop /usr/share/applications/BitcoinDark.desktop
+sudo cp -av /opt/BTCDWallet/BitcoinDarkFiles/scripts/BitcoinDark.desktop /usr/share/applications/
 elif  [ "$1" = "-help" -o "$1" = "-h" -o "$1" = "--help" ]; then
 	usage
 else
