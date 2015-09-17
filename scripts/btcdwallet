@@ -23,10 +23,11 @@ usage(){
 	echo "  ./btcdwallet -show-running	# Will show running BTCD services"
 	echo ""
 	echo "Options:"
-	echo "  -start			: To start services."	
+	echo "  -start				: To start services."	
 	echo "  -stop				: To stop services."
 	echo "  -show-running			: To show running services."
 	echo "  -install			: To install BitcoinDark"
+	echo "  -uninstall			: To uninstall BitcoinDark"
 	echo "  -help				: To see this help."
 	exit 1
 }
