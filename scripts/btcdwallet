@@ -65,6 +65,10 @@ sudo apt-get -y install git curl libc6 libboost-program-options1.55.0 libboost-t
 sudo cp -av ./* /opt/BTCDWallet
 sudo ln -s /opt/BTCDWallet/btcdwallet /usr/bin/btcdwallet
 sudo cp -av /opt/BTCDWallet/BitcoinDarkFiles/scripts/BitcoinDark.desktop /usr/share/applications/
+elif  [ "$1" = "-uninstall" ]; then
+	sudo rm -rf /usr/bin/btcdwallet
+	sudo rm -rf /usr/share/applications/BitcoinDark.desktop
+	sudo rm -rf /opt/BTCDWallet
 elif  [ "$1" = "-help" -o "$1" = "-h" -o "$1" = "--help" ]; then
 	usage
 else
