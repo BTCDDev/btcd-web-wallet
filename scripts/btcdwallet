@@ -56,11 +56,8 @@ sudo apt-get -y install git curl libc6 libboost-program-options1.55.0 libboost-t
 		sudo apt-get upgrade
 		sudo apt-get install libstdc++6
 	fi
-	if [ ! -d "/opt/BTCDWallet" ]; then
-		sudo mkdir /opt/BTCDWallet
-	elif [ -d "/opt/BTCDWallet" ]; then
+	if [ -d "/opt/BTCDWallet" ]; then
 		sudo rm -rf /opt/BTCDWallet
-		sudo mkdir /opt/BTCDWallet
 	fi
 sudo cp -av ../BTCDWallet /opt/BTCDWallet
 sudo ln -s /opt/BTCDWallet/btcdwallet /usr/bin/btcdwallet
