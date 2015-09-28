@@ -11,9 +11,14 @@
         <tbody data-bind="foreach: transactions">
             <tr>
                 <td data-bind="text: timeReceived"></td>
-                <td data-bind="text: category"></td>
+                <td>
+                    <span class="glyphicon" data-bind="css: { glyphicon-log-in: category === 'receive', glyphicon-log-out: category === 'send' }"></span>
+                    <span data-bind="text: category"></span>
+                </td>
                 <td data-bind="text: address"></td>
                 <td data-bind="numericText: $data.amount + $data.fee, precision: 4"></td>
+
+                    <div class="button-settings"><span data-bind="click: toggleSidebar" class="glyphicon glyphicon-cog"></span></div>
             </tr>
         </tbody>
     </table>

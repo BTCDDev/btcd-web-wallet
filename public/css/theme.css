@@ -93,6 +93,10 @@ body {
     text-decoration: none;
 }
 
+.sidebar-nav li div.progress{
+    margin: 20px 20px 0px 20px;
+}
+
 .sidebar-nav > .sidebar-brand {
     height: 65px;
     font-size: 16px;
