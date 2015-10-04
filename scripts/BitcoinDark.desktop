@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0e
+Name=BitcoinDark Wallet
+Comment=BitcoinDark Wallet
+GenericName=BitcoinDark Wallet
+Keywords=Wallet;Blockchain;BTCD
+Exec=btcdwallet -start
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=/opt/BTCDWallet/BitcoinDarkFiles/images/btcd-logo.png
+Categories=GNOME;GTK;Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/chrome;video/webm;application/x-xpinstall;
+StartupNotify=true

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+red=`tput setaf 1`
+green=`tput setaf 2`
+reset=`tput sgr0`
+
+usage(){
+	echo "Usage: BTCDInstallerFile.run [OPTION...]"
+	echo ""
+	echo "Example:"
+	echo "  sh BTCDInstallerFile.run -install		# To Install BitcoinDark on system"
+	echo "  sh BTCDInstallerFile.run -uninstall		# To Uninstall BitcoinDark on system"
+	echo ""
+	echo "Options:"
+	echo "  -install			: To install BitcoinDark."
+	echo "  -uninstall			: To uninstall BitcoinDark."
+	echo "  -help				: To see this help."
+	exit 1
+}
+
+
+if  [ "$1" = "-install" ]; then
+    echo "Installing BitcoinDark on system..."
+    sed -e '1,/^exit$/d' "$0" | tar xvzf - && cd BTCDWallet && ./btcdwallet -install && cd ../ && rm -rf BTCDWallet
+elif  [ "$1" = "-uninstall" ]; then
+	while true; do
+    	read -p "${red}Are you sure you want to UNINSTALL BitcoinDark?${reset}" yn
+    	case $yn in
+        	[Yy]* ) sudo rm -rf /usr/bin/btcdwallet; sudo rm -rf /usr/share/applications/BitcoinDark.desktop; sudo rm -rf /opt/BTCDWallet; break;;
+        	[Nn]* ) echo "${red}BitcoinDark UNINSTALL CANCELED.${reset}"; exit;;
+        	* ) echo "Please answer yes or no.";;
+    	esac
+	done
+elif  [ "$1" = "-help" -o "$1" = "-h" -o "$1" = "--help" ]; then
+	usage
+else
+	usage
+	exit
+fi
+exit
