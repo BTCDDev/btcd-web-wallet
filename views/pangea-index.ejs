@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name = "apple-mobile-web-app-capable" content="yes"/>
+    <meta http-equiv="pragma" content="no-cache"/> 
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/> 
+    <meta name="format-detection" content="telephone=no" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="white" />
+    <meta name="viewport" content="user-scalable=0, initial-scale=1, maximum-scale=1, minimum-scale=1,target-densitydpi=device-dpi" />
+	<link rel="apple-touch-icon" href="images/Icon.png" />
+	<link rel="shortcut icon" href="images/Icon.png">
+    <script src="js/socket.io.js" type="text/javascript"></script>
+    <script src="js/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap.min.js" type="text/javascript"></script>
+	<style>
+		.tab{margin-left:30px;}
+	
+	</style>
+    <script>
+        var pretty = <%= pretty %>;
+        var initStatusFlag = 0;
+        var offers = []; //All Players in the lobby   
+        var myOffer = "";
+        var GetKeys = function(obj){
+            var keys = [];
+            for(var key in obj){
+             keys.push(key);
+            }
+            return keys;
+        }
+        $(document).ready(function(){
+
+            console.log("Ready");
+            var socket = io();
+            socket.emit('pangeaStatus', {});
+            var $lobby = $("#lobbyBtn");
+            var $joinBtn = $("#joinBtn");
+            var $statusBtn = $("#statusBtn");
+            var $submitInput = $("#submitInput");
+
+            
+            $lobby.on('click', function(){
+                console.log("Querying for Pangea Lobby.");
+                socket.emit('pangeaLobby', {});
+            });
+
+
+            $joinBtn.on('click', function(){
+                console.log("Placing Bid to Join Pangea Lobby.");
+                socket.emit('pangeaJoin', {});
+            });
+
+
+            $statusBtn.on('click', function(){
+                console.log("Checking Status.");
+                socket.emit('pangeaStatus', {});
+            });
+
+
+
+            //Start a Game
+            $submitInput.on('click', function(){
+                if(myOffer == ""){
+                    alert("You must place a bid to start a game!");
+                    return;
+                }
+                if(offers.length < 2){
+                    alert("No other players!");
+                    return;
+                }
+                var $number = $("#input").val();
+                var value = $number;
+                if($number == ""){
+                   value = 2;
+                }
+                if(parseInt(value) && parseInt(value) <= 9 && parseInt(value) > 1){
+                    var maxPlayers = parseInt(value);
+                    var query = "";
+                    query += '{"plugin": "pangea", "method": "start", "resubmit": "no", "base": "BTCD", "addrs": ["' + myOffer + '", ';
+                    var i = 0;
+
+
+                    //addrs
+                    for(i=0; (i<maxPlayers-1)&&(i<offers.length-1); i++){
+                        if(offers[i].offerNXT != myOffer){
+                            query += '"' + offers[i].offerNXT + '",';
+                        }
+                    }
+
+
+                    if(offers[i].offerNXT != myOffer){
+                        query += '"' + offers[i].offerNXT + '"], "bids": [';
+                    }
+                    else{
+                            query = query.substring(0, query.length - 1);
+                            query += '], "bids": [';
+                    }
+
+
+
+                    //bids
+                    //host defined
+
+/*
+            <span>Max Players (leave blank for 2, max. is 9):</span><input type="text" id="input"></input><br />
+            <span>Big Blind (in satoshis - 1 BTCD = 10000000):</span><input type="text" id="bigBlind"></input><br />
+            <span>Ante  (in satoshis - 1 BTCD = 10000000):</span><input type="text" id="ante"></input><br />
+            <span>Rake Millis:</span><input type="text" id="rakeMillis"></input><br />
+            <span>Min Buyin (x BigBlind):</span><input type="text" id="minBuyin"></input><br />
+            <span>Max Buyin (x BigBlind):</span><input type="text" id="maxBuyin"></input><br />
+
+*/
+                    var bigblind = $("#bigBlind").val();
+                    var ante = $("#ante").val();
+                    var rakemillis = $("#rakeMillis").val();
+                    var minbuyin = $("#minBuyin").val();
+                    var maxbuyin = $("#maxBuyin").val();
+
+
+                    if(minbuyin < 20){
+                        minbuyin = 20;
+                    }
+                    if(maxbuyin < minbuyin){
+                        maxbuyin = minbuyin*4;
+                    }
+                    if(maxbuyin > 250){
+                        maxbuyin = 250;
+                    }
+                    if (minbuyin > maxbuyin){
+                        minbuyin = maxbuyin;
+                    }
+
+                    if(!Number(bigblind) || !Number(ante) || !Number(rakemillis) || !Number(minbuyin) || !Number(maxbuyin)){
+                        alert("Incorrect Input (non numeric)");
+                        return;
+                    }
+
+                    console.log("MyNxt: " + myOffer);
+                    //host
+                    query += '{"offerNXT":"' + myOffer + '","wallet":{"isbot":0,"bigblind":"' + bigblind +'","ante":"' + ante + '","rakemillis":' + rakemillis + ', "minbuyin":"'+minbuyin+'", "maxbuyin":"'+maxbuyin+'"}},';
+
+
+                    //others
+                    for(i=0; i<offers.length; i++){
+                        if(offers[i].offerNXT == myOffer){ continue; }
+                        query += '{"offerNXT": "' + offers[i].offerNXT +'", ';
+                        query += '"wallet": {';
+                        query += '"isbot":0, "bigblind": "' + bigblind +'", "ante": "' + ante +'", "rakemillis": ' + rakemillis + ', "minbuyin":"'+minbuyin+'", "maxbuyin": "'+maxbuyin+'"';
+                        query += '}';
+
+                        if(i == offers.length-1){console.log("end");
+                            query += '}';
+                        }
+                        else{
+                            query += "} ";    
+                        }                    
+                    }
+                    query += '], "offerNXT": "' + myOffer + '", "bigblind": "' + bigblind + '", "ante": "' + ante + '", "rakemillis": ' + rakemillis + ', "minbuyin": "' + minbuyin + '", "maxbuyin": "'+ maxbuyin +'"';
+                    query += "}";
+
+                    console.log("Start Query: " + query);
+                   // socket.emit('pangeaStart', { data : query});
+                }
+                else{
+                    alert("Please enter a valid number for max players.");
+                }
+            });
+
+            socket.on('pangeaLobbyRes', function(data){
+                offers = [];
+                data = JSON.parse(data);
+                console.log(data);
+                $("#lobbyDiv").html("Available Players Waiting to Join a Table: <br />");
+            
+                for(var w=0; w<data.numbids; w++){
+                    
+                    var key = data.bids[w]; 
+                    var r = GetKeys(key);
+                    var flag = 0;
+                    for(var i=0; i<offers.length; i++){
+                        console.log("comparing " + offers[i].offerNXT + " and " + key["offerNXT"]);
+                        if (offers[i].offerNXT == key["offerNXT"]){
+                            flag = 1;
+                            break;
+                        }
+                    }
+                    if(flag == 0){
+                        offers.push(data.bids[w]);
+                        $("#lobbyDiv").append("<br/><b>Player " + (w+1) + ": </b> ");
+                        $("#lobbyDiv").append(key["offerNXT"] + " -- Volume: " + key["volume"] + "<br />");
+                    }
+                    else{ console.log("Already have offer " + key["offerNXT"]); }
+                }
+            });
+
+            socket.on('pangeaJoinRes', function(data){
+                myOffer = JSON.parse(data).offerNXT;
+            });
+
+
+            socket.on('pangeaStatusRes', function(data){
+                var $statusDiv = $("#statusDiv");
+                if(initStatusFlag == 1){}
+                else {
+                    data = JSON.parse(data);
+                    var $tableDiv = $("#tableDiv");
+                    if(data.tables){
+                        for(var i=0; i<data.tables.length; i++){
+                            if (pretty){
+                                $tableDiv.append('<a href="/pretty-table/'+data.tables[i].tableid+'">Table '+data.tables[i].tableid+'</a><br/>');
+                            }
+                            else{
+                                $tableDiv.append('<a href="/table/'+data.tables[i].tableid+'">Table '+data.tables[i].tableid+'</a><br/>');
+                            }
+
+                        }   
+                    }
+                    initStatusFlag = 1;
+                }
+                myOffer = data.nxtaddr;
+            });
+
+            socket.on('pangeaStartRes', function(data){
+                var d = data;
+                socket.emit('pangeaStatus', {});
+            });
+
+
+        });
+    </script>
+	<title>BitcoinDark Pangea Basic GUI</title>
+  </head>
+  <body>
+		<span><h2>BitcoinDark Pangea Basic GUI</h2></span>
+		            <button id="joinBtn" style="clear:right; float:right; margin-right:70%;">Place Bid To Join A Game</button>
+		            <button id="statusBtn" style="clear:right; float:right; margin-right:70%;">Check Status of Tables</button>
+                    <div id="statusDiv"></div>
+            <br />
+		<div>
+			<button id="lobbyBtn">View Lobby</button>
+            <div id="lobbyDiv"></div>
+            <br />
+
+            <span>Max Players (leave blank for 2, max. is 9):</span><input type="text" id="input"></input><br />
+            <span>Big Blind (in satoshis - 1 BTCD = 10000000):</span><input type="text" id="bigBlind"></input><br />
+            <span>Ante  (in satoshis - 1 BTCD = 10000000):</span><input type="text" id="ante"></input><br />
+            <span>Rake Millis:</span><input type="text" id="rakeMillis"></input><br />
+            <span>Min Buyin (x BigBlind):</span><input type="text" id="minBuyin"></input><br />
+            <span>Max Buyin (x BigBlind):</span><input type="text" id="maxBuyin"></input><br />
+            <button id="submitInput">Start New Game</button>	
+			<p />
+			
+		</div><p /><p /><br />
+        <a href="/cashier">Cashier</a><br />
+        <a href="/rosetta">Rosetta</a><br />
+        <div id="tableDiv"></div>
+        <br />
+		<div>
+            <center>
+			    <span>2015 BTCDDev</span>
+            </center>
+		</div>
+  </body>
+</html>

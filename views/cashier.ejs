@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name = "apple-mobile-web-app-capable" content="yes"/>
+    <meta http-equiv="pragma" content="no-cache"/> 
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/> 
+    <meta name="format-detection" content="telephone=no" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="white" />
+    <meta name="viewport" content="user-scalable=0, initial-scale=1, maximum-scale=1, minimum-scale=1,target-densitydpi=device-dpi" />
+	<link rel="apple-touch-icon" href="images/Icon.png" />
+	<link rel="shortcut icon" href="images/Icon.png">
+    <script src="/js/socket.io.js" type="text/javascript"></script>
+    <script src="/js/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+	<style>
+		.tab{margin-left:30px;}
+	    pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+        .string { color: green; }
+        .number { color: darkorange; }
+        .boolean { color: blue; }
+        .null { color: magenta; }
+        .key { color: red; }
+	</style>
+    <script>
+            
+            var socket = io();
+
+            function output(inp) {
+                document.body.appendChild(document.createElement('pre')).innerHTML = inp;
+            }
+            function syntaxHighlight(json) {
+                json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                    var cls = 'number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
+            }
+
+
+            socket.emit('pangeaRates', {});
+            socket.emit('pangeaStatus', {});
+            var updateTables = function(json)
+            {
+                var $tablesList = $("#tableIdSelect");
+                $tablesList.empty();
+                if (json == null){ 
+                    $tablesList.append('<option value="">None</option>'); 
+                }
+                else if (json.tables == null) { $tablesList.append('<option value="">None</option>'); }
+                else{
+                    for(var i=0; i<json.tables.length; i++){
+                        $tablesList.append('<option value="' + json.tables[i].tableid + '">Table '+i+' -- (' + json.tables[i].tableid +')</option>');
+                    }
+                }
+            }
+
+
+            socket.on('pangeaStatusRes', function(data){
+                console.log(JSON.stringify(data));
+                var d = JSON.parse(data);
+                updateTables(d);
+                var $statusDiv = $("#statusDiv");
+            });
+
+
+            socket.on('pangeaRatesRes', function(data){
+                var child = $("pre");
+                if(child) child.empty();
+                var str = JSON.stringify(JSON.parse(data), undefined, 4);
+                output(syntaxHighlight(str));
+
+            });
+
+            socket.on('pangeaError', function(data){ alert(data.message); });
+
+
+            socket.on("pangeaBuyinRes", function(data){ 
+                var child = $("pre");
+                if(child) child.empty();
+                var str = JSON.stringify(JSON.parse(data), undefined, 4);
+                output(syntaxHighlight(str));
+            });
+
+
+
+
+        $(document).ready(function(){
+
+            $("#updateStatusBtn").on('click', function(){
+                socket.emit('pangeaStatus', {});
+            });
+
+
+            $("#buyinBtn").on('click', function(){
+                var $amount = $("#amountInput").val();
+                var $tableid = $("#tableIdSelect").val();
+                console.log($tableid + " " + $amount);
+                socket.emit("pangeaBuyin", {tableid: $tableid, amount: $amount});            
+            });
+        });
+    </script>
+	<title>BitcoinDark Pangea Basic GUI</title>
+  </head>
+  <body>
+		<span><h2>BitcoinDark Pangea Basic GUI - Cashier</h2></span>
+        <div id="mainDiv">
+        <select id="tableIdSelect">
+        </select>
+        <input id="amountInput" value="0" type="number"></input>
+        <button id="buyinBtn">Buyin</button><br />
+        </div>
+        <div id="updateDiv">
+            <button id="updateStatusBtn">Update Tables</button>
+        </div>
+		</div><p />
+        <p>
+            <div id="responseDiv" style="margin-top:20px;text-align:center;">
+
+            </div>
+        </p>    
+        <p /><br />
+        <a id="lobby" href="/Pangea">Lobby</a>  
+        <br />
+		<div>
+            <center>
+			    <span>2015 BTCDDev</span>
+            </center>
+		</div>
+        <div id="ratesDiv">
+            <span>Rates:</span>
+            <div id="rates"></div>
+        </div>
+  </body>
+</html>

@@ -1,0 +1,299 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name = "apple-mobile-web-app-capable" content="yes"/>
+    <meta http-equiv="pragma" content="no-cache"/> 
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/> 
+    <meta name="format-detection" content="telephone=no" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="white" />
+    <meta name="viewport" content="user-scalable=0, initial-scale=1, maximum-scale=1, minimum-scale=1,target-densitydpi=device-dpi" />
+	<link rel="apple-touch-icon" href="images/Icon.png" />
+	<link rel="shortcut icon" href="images/Icon.png">
+    <script src="/js/socket.io.js" type="text/javascript"></script>
+    <script src="/js/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+	<style>
+		.tab{margin-left:30px;}
+	
+	</style>
+    <script>
+            var table = "";
+            var tableid = "<%= tableid %>";
+            var socket = io();
+            var drawScreen = function(){}
+
+            socket.emit('pangeaStatus', {tableid: tableid});
+            
+
+
+
+            var flag = 0;
+
+            socket.on('pangeaStatusRes', function(data){
+                var $statusDiv = $("#statusDiv");
+                table = JSON.parse(data).table;
+                drawScreen(table);
+                if(flag == 0 ){
+                    flag = 1;
+                }
+            });
+            socket.on('pangeaError', function(data){ alert(data.message); });
+/*
+                <button id="allinBtn">All In</button><br />
+                <button id="checkBtn">Check</button><br />
+                <button id="callBtn">Call</button><br />
+                <span><label>Bet Amount</label><input type="text" id="betInput"></input></span><button id="betBtn">Bet</button><br />
+                <span><label>Raise Amount</label><input type="text" id="raiseInput"></input></span><button id="raiseBtn">Raise</button><br />
+                <button id="foldBtn">Fold</button><br />
+*/
+
+
+
+/*
+
+betting
+
+./BitcoinDarkd SuperNET '{"plugin":"pangea","method":"turn","action":"allin"}'
+./BitcoinDarkd SuperNET '{"plugin":"pangea","method":"turn","action":"check"}'
+./BitcoinDarkd SuperNET '{"plugin":"pangea","method":"turn","action":"call"}'
+./BitcoinDarkd SuperNET '{"plugin":"pangea","method":"turn","action":"raise"}'
+./BitcoinDarkd SuperNET '{"plugin":"pangea","method":"turn","action":"bet"}'
+./BitcoinDarkd SuperNET '{"plugin":"pangea","method":"turn","action":"fold"}'
+
+*/
+
+
+        var ChooseCard = function (num) {
+            var orig = num;
+            var suit = "";
+            if(num <= 12){
+                suit = "clubs";
+            }
+            else if ( num > 12 && num <= 25){
+                suit = "diamonds";
+            }
+            else if ( num > 25 && num <= 38){
+                suit = "hearts";
+            }
+            else if ( num > 38 && num <= 51){
+                suit = "spades";
+            }
+            else{
+                return;
+            }
+            var lowNum = num;
+            if(num > 12){
+                while(num > 12){
+                    num -= 13;
+                    lowNum = num;
+                }
+            }
+    
+            if(lowNum==0)
+                lowNum = "ace";
+            else if(lowNum == 10){
+                lowNum = "jack";
+            }
+            else if(lowNum == 11){
+                lowNum = "queen";
+            }
+            else if(lowNum == 12){
+                lowNum = "king";
+            } 
+            else
+                lowNum++;
+            var answer = [];
+            answer.push(lowNum);
+            answer.push(suit);
+            return answer;
+        }
+
+        var CommunityCards  = [];
+        var MyCards         = [];
+
+
+        var GetKeys = function(obj){
+            var keys = [];
+            for(var key in obj){
+             keys.push(key);
+            }
+            return keys;
+        }
+
+
+
+
+///////////////Main Function
+
+
+            drawScreen = function(table){
+
+
+            //Submitting a move
+            $("#allinBtn").on('click', function(){ socket.emit('pangeaTurn', {action: "allin"});  });
+            $("#checkBtn").on('click', function(){ socket.emit('pangeaTurn', {action: "check"});  });      
+            $("#callBtn").on('click', function(){  socket.emit('pangeaTurn', {action: "call"});  });
+            $("#betBtn").on('click', function(){ 
+                console.log("betting " + $("#betInput").val());  
+                socket.emit('pangeaTurn', {action: "bet", amount: $("#betInput").val()}); 
+            });
+            $("#raiseBtn").on('click', function(){ 
+                console.log("betting " + $("#raiseInput").val()); 
+                socket.emit('pangeaTurn', {action: "raise", amount: $("#raiseInput").val()});
+            });
+            $("#foldBtn").on('click', function(){  socket.emit('pangeaTurn', {action: "fold"}); });
+
+            //Parse table data and print to screen
+            $("#tableID").text("Table ID: " + tableid);
+            $("#numPlayers").text("Number of Players: " + table.N);
+            $("#numHands").text("Number of Hands: " + table.numhands);
+            $("#rake").text("Rake: " + (table.rake).toFixed(2) + "%");
+            $("#hostRake").text("Host Rake: " + (table.hostrake).toFixed(8));
+            $("#pangeaRake").text("Pangea Rake: " + (table.pangearake).toFixed(8));
+            $("#bigBlind").text("Big Blind: " + table.bigblind.toFixed(8));
+            $("#ante").text("Ante: " + table.ante);
+
+            var $playingDiv = $("#otherPlayersDiv");
+            var $communityDiv = $("#communityDiv");
+            var $myPlayingDiv = $("#myPlayingDiv"); 
+            var $totalBetsDiv = $("#totalBetsDiv");       
+            var $playingOptionsDiv = $("#playingOptionsDiv");
+            $communityDiv.empty();
+            $playingDiv.empty();
+            $totalBetsDiv.empty();
+            $myPlayingDiv.empty();
+            for(var i=0; i<table.N; i++){
+                if(i != table.myind){
+                    if(i==table.button){
+                        $playingDiv.append("<span id=\"player"+i+"\" style=\"margin:3%;\"><i>Player" + i + "</i></span>");
+                    }
+                    else{
+                        $playingDiv.append("<span id=\"player"+i+"\" style=\"margin:3%;\">Player " + i + "</span>");
+                    }
+                }
+            }
+            $playingDiv.append("<br/>");
+            for(var i=0; i<table.N; i++){
+                if(i != table.myind)
+                    $playingDiv.append("<span id=\"player"+i+"Balance\" style=\"margin:2%;\">Balance: <b>" + table.balances[i].toFixed(8) + "</b></span>");
+            }
+            $playingDiv.append("<br/>");
+            for(var i=0; i<table.N; i++){
+                if(i != table.myind)
+                $playingDiv.append("<span id=\"player"+i+"Status\" style=\"margin:2%;\">Status: <b>" + table.status[i] + "</b></span>");
+            }
+            $playingDiv.append("<br/>");
+            for(var i=0; i<table.N; i++){
+                if(i != table.myind)
+                    $playingDiv.append("<span id=\"player"+i+"Bet\" style=\"margin:3%;\">Bet: <b>" + table.bets[i].toFixed(8) + "</b></span>");
+            }
+            var lastbet = table.hand.lastbettor;
+            if(lastbet == table.myind)
+                lastbet = "Me";
+            else{
+                lastbet = "Player " + lastbet;
+            }
+            $totalBetsDiv.append("Total Bets: <b>" + table.totalbets + "</b><br />Last Raise: <b>" + table.hand.lastraise + "</b><br />Last Bet: <b>" + lastbet + "</b>");
+            $totalBetsDiv.append("<br/><span>Bet Size: <b>" + table.hand.betsize.toFixed(8) +"</b></span>");
+
+            $communityDiv.append("<p></p><span id=\"communityCardsSpan\"><b>Community Cards:</b></span><br />");
+            if(table.hand.cards.length == 0){
+                $communityDiv.append("");
+            }
+            else{
+                if(table.hand.cards.length > 0){
+                    for(var i=0; i<table.hand.cards.length; i++){
+                        var card = ChooseCard(table.hand.cards[i]);
+                        var face = String(card[0]);
+                        var suit = String(card[1]);
+                        $communityDiv.append("<img src=/res/images/card_deck/" + suit + "/" + face + ".jpg style=\"width:8%;\"></img> ");
+                    }
+                }
+            }
+            var myCardA = ChooseCard(table.hand.cardA);
+            var faceA = String(myCardA[0]);
+            var suitA = String(myCardA[1]);
+
+            var myCardB = ChooseCard(table.hand.cardB);
+            var faceB = String(myCardB[0]);
+            var suitB = String(myCardB[1]);
+            if(table.myind == table.button){
+                $myPlayingDiv.append("<span id=\"myPlayingSpan\" style=\"margin:30px;\"><i>Me</i>:</span>");
+            }
+            else{
+                $myPlayingDiv.append("<span id=\"myPlayingSpan\" style=\"margin:30px;\">Me:</span>");
+            }
+            $myPlayingDiv.append("<br/><span>My Cards:</span><br/>" + "<img src=\"/res/images/card_deck/" + String(myCardA[1]) + "/" + String(myCardA[0]) + ".jpg\" style=\"width:10%;\"></img>" + "   " + "<img src=\"/res/images/card_deck/" + String(myCardB[1]) + "/" + String(myCardB[0]) + ".jpg\" style=\"width:10%;\"></img>");
+            var me = table.myind;
+            $myPlayingDiv.append("<br /><span>Balance: <b>" + table.balances[me].toFixed(8) +"</b></span><br /><span>Status: <b>" + table.status[me] +"</b></span><br/><span>Bet: <b>" + table.bets[me].toFixed(8) + "</b></span>");
+
+            if(table.hand.undergun == 1){//my turn
+                $playingOptionsDiv.show();  
+            }
+            else{
+                $playingOptionsDiv.hide();
+            }
+            }
+
+
+
+//////////////////
+
+
+
+
+
+        $(document).ready(setTimeout(function(){
+            window.setInterval(function(){ socket.emit('pangeaStatus', {tableid: tableid}); }, 1000);
+            drawScreen(table);
+        }, 1000));
+    </script>
+	<title>BitcoinDark Pangea Basic GUI</title>
+  </head>
+  <body>
+		<span><h2>BitcoinDark Pangea Basic GUI</h2></span>
+        <button id="statusBtn" style="clear:right; float:right; margin-right:70%;">Check Status of Table</button>
+        <span><h3 id="tableID"></h3></span>
+        <span id="numPlayers"></span><br />
+        <span id="numHands"></span><br />
+        <span id="rake"></span><br />
+        <span id="hostRake"></span><br />
+        <span id="pangeaRake"></span><br />
+        <span id="bigBlind"></span><br />
+        <span id="ante"></span><br />
+        <div id="statusDiv"></div>
+            <br />
+		<div>
+						
+		</div><p />
+        <p>
+            <div id="otherPlayersDiv" style="text-align:center;width:100%;height:75%;">
+                
+            </div>   
+            <div id="totalBetsDiv" style="margin-top:50px;text-align:center;"></div>
+            <div id="communityDiv" style="margin-top:20px;text-align:center;">
+            </div>
+            <div id="myPlayingDiv" style="margin-top:20px;text-align:center;">
+            </div>
+
+            <div id="playingOptionsDiv" style="margin-top:20px;text-align:center;">
+                <span><b>My Turn:</b></span><br />
+                <button id="allinBtn">All In</button><br />
+                <button id="checkBtn">Check</button><br />
+                <button id="callBtn">Call</button><br />
+                <span><label>Bet Amount</label><input type="text" id="betInput"></input></span><button id="betBtn">Bet</button><br />
+                <span><label>Raise Amount</label><input type="text" id="raiseInput"></input></span><button id="raiseBtn">Raise</button><br />
+                <button id="foldBtn">Fold</button><br />
+            </div>
+        </p>    
+        <p /><br />
+        <a id="lobby" href="/Pangea">Lobby</a>  
+        <br />
+		<div>
+            <center>
+			    <span>2015 BTCDDev</span>
+            </center>
+		</div>
+  </body>
+</html>

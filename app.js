@@ -54,6 +54,8 @@ function ExecuteProcess(prcs,atrbs) {
 function btcdapp() {
 //------- app.js CODE GOES HERE -------
 
+var pretty = true;
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var routes = require('./routes');
@@ -61,7 +63,11 @@ var http = require('http');
 var path = require('path');
 var app = express();
 var btcd=require("./btcdapi");
+var socketio = require("socket.io");
 var querystring = require('querystring');
+var prettyui = require("./pretty-ui/server/pretty-ui-server")
+
+var io;
 
 // all environments
 app.set('port', process.env.PORT || 8080);
@@ -75,6 +81,9 @@ app.use(express.methodOverride());
 app.use(bodyParser.json());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/pretty-ui", express.static(path.join(__dirname, './pretty-ui/client')));
+app.use("/pretty-table/images", express.static(path.join(__dirname, './pretty-ui/client/images')));
+app.use(express.static(path.join(__dirname,'/pretty-ui/client')));
 
 // development only
 if ('development' == app.get('env')) {
@@ -82,9 +91,13 @@ if ('development' == app.get('env')) {
 }
 console.log('BitcoinDark Node Starting');
 
-var server = http.createServer(app).listen(app.get('port'), function(err, result){
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+server.listen(app.get('port'), function(err, result){
     console.log('Express server listening on port ' + app.get('port'));
 });
+
+prettyui.init(io);
 
 Object.defineProperty(Error.prototype, 'toJSON', {
     value: function () {
@@ -369,78 +382,6 @@ app.get('/gettx/:txid', function(req, res){
 
 //SuperNET functions///////////////
 
-app.get('/getpeers', function(req, res){
-	btcd.SuperNET('{"requestType":"getpeers"}', function(err, data){
-		if(err)
-			console.log("err: " + err);
-		else
-			res.render('getpeers',{peers:JSON.parse(data).peers});
-	});
-});
-
-app.get('/ramstatus', function(req, res){
-	btcd.SuperNET('{"requestType":"ramstatus", "coin":"BTCD"}', function(err, data){
-		if(err)
-			console.log("err: " + err);
-		else
-			res.render('ramstatus', {status: data});
-	});
-});
-
-app.get('/getaddr/:addr', function(req, res){
-	btcd.SuperNET('{"requestType":"ramrawind", "type": "addr", "string": "' + req.params.addr + '"}', function(err, data){
-		if(err)
-			console.log("err: " + err);
-		else
-			res.render('getaddr', {addr: JSON.stringify(data)});
-	});
-});
-
-app.get('/getRamtx/:txid', function(req, res){
-	btcd.SuperNET('{"requestType":"ramrawind", "destip":"127.0.0.1", "port": "14632", "coin":"BTCD", "type": "txid", "string": "' + req.params.txid + '"}', function(err, data){
-		if(err)
-			console.log("err: " + err);
-		else
-			res.render('getramtx', {tx: JSON.stringify(data)});
-	});
-});
-
-var unspent = 0;
-app.get('/ramtxlist/:addr/:unspent', function(req, res){
-	if(req.params.unspent == "true")
-		unspent = 1;
-	else
-		unspent = 0;
-	btcd.SuperNET('{"requestType":"ramtxlist", "coin":"BTCD", "address": "' + req.params.addr + '", "unspent": "' + unspent + '"}', function(err, data){
-		if(err)
-			console.log("err: " + err);
-		else
-			res.render('ramtxlist', {txlist: JSON.stringify(data)});
-	});
-});
-
-app.get('/getramblock/:blocknum', function(req, res){
-	btcd.SuperNET('{"requestType":"ramblock", "coin":"BTCD", "blocknum": "' + req.params.blocknum + '"}', function(err, data){
-		if(err)
-			console.log("err: " + err);
-		else
-			res.render('ramblock', {block: JSON.stringify(data)});
-	});
-});
-
-app.get('/ramrichlist/:numwhales', function(req, res){
-if(req.params.numwhales <= 200){
-	btcd.SuperNET('{"requestType":"ramrichlist", "coin":"BTCD", "numwhales": "'+ req.params.numwhales +'"}', function(err, data){
-		if(err)
-			console.log("err: " + err);
-		else
-			res.render('ramrichlist', {richlist: JSON.stringify(data)});
-	});
-}
-else
-    res.render('ramrichlist', {richlist: "Please specify a number less than 200 for the top addresses"});
-});
-
 app.post('/supernet', function(req, res){
     console.log(JSON.stringify(req.body));
     btcd.supernet(JSON.stringify(req.body), function(err,data){
@@ -467,7 +408,48 @@ app.post('/IDEXsupernet', function(req, res){
     });
 });
 
+/*
+ *    Pangea
+ */
 
+/*
+ *
+ * Ugly Pangea GUI Routes
+ *
+*/
+
+app.get('/Pangea', function(req,res){
+	res.render('pangea-index', {
+            pretty: pretty
+        });
+	});	
+
+app.get('/rosetta', function(req,res){
+	res.render('rosetta');
+	});	
+
+app.get('/cashier', function(req,res){
+	res.render('cashier');
+	});
+
+
+
+app.get('/table/:tableID', function(req,res){
+	    res.render('table', {tableid: req.params.tableID});
+	});
+
+app.get('/pretty-table/:tableID', function(req, res, next){
+    prettyui.Table.tableId = req.params.tableID;
+    var playerId = 0;
+
+    if (req.query.playerId)
+        playerId = req.query.playerId;;
+
+    res.render('pretty-table', {tableid: req.params.tableID, playerId: playerId});
+    //express.static(path.join('./pretty-ui/client/index.html'))(req, res, next);
+});
+ 
+ 
 app.post('/nxt', function(req,res){
     var reqBody = querystring.stringify(req.body);
     var postOptions = {
@@ -504,6 +486,141 @@ app.post('/nxt', function(req,res){
 
     postReq.write(reqBody);
     postReq.end();
+});
+
+/*
+ *	Socket.io
+ */
+/*
+ *
+ *  socket.io
+ *
+*/
+
+io.sockets.on('connection', function(socket){
+
+    socket.on('pangeaLobby', function(data){
+        btcd.SuperNET('{"plugin":"InstantDEX","method":"orderbook","base":"BTCD","exchange":"pangea","allfields":1}', function(err, data){
+            socket.emit('pangeaLobbyRes', data);
+        });
+    });
+
+
+    socket.on('pangeaJoin', function(data){
+        btcd.SuperNET('{"plugin":"InstantDEX","method":"placebid","base":"BTCD","exchange":"pangea","volume":1, "timeout":100}', function(err, data){
+            socket.emit('pangeaJoinRes', data);
+
+        });
+    });
+
+
+
+    socket.on('pangeaStatus', function(data){
+        if(data.tableid){
+            btcd.SuperNET('{"plugin":"pangea","method":"status", "tableid": "' + data.tableid + '", "timeout":100, "threadid": 0}', function(err, data){
+                socket.emit('pangeaStatusRes', data);
+
+            });
+        }
+        else{
+            btcd.SuperNET('{"plugin":"pangea","method":"status", "timeout":100}', function(err, data){
+                socket.emit('pangeaStatusRes', data);
+
+            });
+        }
+    });
+
+
+    socket.on('pangeaStart', function(data){
+        var d = JSON.stringify(data.data);
+
+        btcd.SuperNET(JSON.parse(d), function(err, data){
+            socket.emit('pangeaStartRes', data);
+
+        });
+    });
+
+
+    function isNumeric(n) {
+      return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+
+    socket.on('pangeaTurn', function(data){
+        var d = data;
+        console.log(JSON.stringify(data));
+        var action = d.action;
+        var amtFlag = 0;
+        var amount;
+        if(action=="bet" || action=="raise"){
+            if(!isNumeric(d.amount)){
+                socket.emit('pangeaError', {message: "Amount is not numeric!"});
+                return;
+            }
+            btcd.SuperNET('{"plugin":"pangea","method":"turn", "action":"'+action+'", "amount":"'+d.amount+'"}', function(err, data){
+            });
+        }
+        else{
+            btcd.SuperNET('{"plugin":"pangea","method":"turn", "action":"'+action+'"}', function(err, data){
+            });
+        }
+
+    });
+
+    socket.on('pangeaRosetta', function(data){
+        btcd.SuperNET('{"plugin":"pangea","method":"rosetta"}', function(err, data){
+            socket.emit("pangeaRosettaRes", data);
+        });
+
+    });
+
+    socket.on('pangeaRosettaWipCoin', function(data){
+        btcd.SuperNET('{"plugin":"pangea","method":"rosetta", "coin": "' + data.coin +'", "wip": "' + data.address + '"}', function(err, data){
+            socket.emit("pangeaRosettaRes", data);
+        });
+    });
+
+    socket.on('pangeaRosettaCoin', function(data){
+        if(data.coin == "BTCD"){
+            btcd.dumpprivkey(data.address, function(err, d){
+                if(err){
+                    socket.emit('pangeaError', {message: err.message});
+                }
+                else{
+                btcd.SuperNET('{"plugin":"pangea","method":"rosetta", "coin": "' + data.coin +'", "wip": "' + d + '"}', function(err, data){
+                    socket.emit("pangeaRosettaRes", data);
+                });
+                }
+            });
+        }
+        else{
+                btcd.SuperNET('{"plugin":"pangea","method":"rosetta", "coin": "' + data.coin +'", "addr": "' + data.address + '"}', function(err, data){
+                    socket.emit("pangeaRosettaRes", data);
+                });
+        }
+
+
+
+    });
+
+
+    socket.on('pangeaBuyin', function(data){
+		console.log("Buyin: " + JSON.stringify(data));
+        btcd.SuperNET( '{"plugin":"pangea","method":"buyin","tableid":"'+data.tableid+'","amount":"'+data.amount+'"}', function(err, data){
+            console.log("returned " + JSON.stringify(data));
+            socket.emit('pangeaBuyinRes', data);
+        });
+
+    });
+
+    socket.on('pangeaRates', function(data){
+
+        btcd.SuperNET('{"plugin":"pangea","method":"rates"}', function(err, data){
+            socket.emit('pangeaRatesRes', data);
+        });
+
+    });
+
+
 });
 
 //------- app.js CODE ENDS -------
