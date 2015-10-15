@@ -93,6 +93,10 @@ body {
     text-decoration: none;
 }
 
+.sidebar-nav li div.progress{
+    margin: 20px 20px 0px 20px;
+}
+
 .sidebar-nav > .sidebar-brand {
     height: 65px;
     font-size: 16px;
@@ -208,8 +212,19 @@ body {
 .table-striped > tbody > tr:hover:nth-of-type(2n) {
   background-color: #f5f5f5;
 }
+#history-container .glyphicon{
+    margin-right: 10px;
+}
 
-#receive-container .glyph-icon-plus{
+#history-container .glyphicon-log-in{
+    color: green;
+}
+
+#history-container .glyphicon-log-out {
+    color: red;
+}
+
+#receive-container .glyphicon-plus{
   color: green;
 }
 
