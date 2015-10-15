@@ -1,5 +1,5 @@
 {
-  "name": "BitcoinDark Wallet",
+  "name": "BitcoinDark-Wallet",
   "version": "0.0.1",
   "private": true,
   "node-main": "./app.js",
@@ -23,7 +23,7 @@
     "async": "0.2.10",
     "mongode": "0.1.6",
     "node-btcd": "0.3.5",
-    "socket.io": "0.9.16",
+    "socket.io": "*",
     "cryptoaddress-validator": "0.0.1",
     "xss":"0.1.7"
   }
