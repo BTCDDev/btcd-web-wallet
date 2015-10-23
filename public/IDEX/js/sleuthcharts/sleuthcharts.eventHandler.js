@@ -1,5 +1,8 @@
 
 
+// Created by CryptoSleuth <cryptosleuth@gmail.com>
+
+
 Sleuthcharts = (function(Sleuthcharts) 
 {
 	
@@ -16,6 +19,7 @@ Sleuthcharts = (function(Sleuthcharts)
 		{
 			var DOMEventHandler = this;
 			DOMEventHandler.chart = chart;
+			DOMEventHandler.lastMousePos = {'x':-1,'y':-1};
 		},
 		
 		
@@ -303,10 +307,28 @@ Sleuthcharts = (function(Sleuthcharts)
 		},
 		
 		
+		checkMouseDiff: function(mouseX, mouseY)
+		{
+			var DOMEventHandler = this;
+			
+			var lastMouseX = DOMEventHandler.lastMousePos.x;
+			var lastMouseY = DOMEventHandler.lastMousePos.y;
+			
+			var yDiff = Math.abs(mouseY - lastMouseY);
+			var xDiff = Math.abs(mouseX - lastMouseX);
+
+			var moved = xDiff >= 1 || yDiff >= 1;
+			
+			return moved;
+		},
+		
+		
+		
 		onContainerMouseMove: function(e)
 		{
 			var DOMEventHandler = this;
 			var chart = DOMEventHandler.chart;
+			var plotHandler = chart.plotHandler;
 			
 			e = DOMEventHandler.normalizeMouseEvent(e);
 
@@ -319,13 +341,17 @@ Sleuthcharts = (function(Sleuthcharts)
 			DOMEventHandler.resizeSeriesMousemove(e);
 			DOMEventHandler.resizeSeries(e);
 
-			
+			if (!(DOMEventHandler.checkMouseDiff(mouseX, mouseY)))
+			{
+				return;
+			}
+
 			chart.crosshairCTX.clearRect(0, 0, chart.crosshairCanvas.width, chart.crosshairCanvas.height);
 			chart.infoCTX.clearRect(0, 0, chart.infoCanvas.width, chart.infoCanvas.height);
 			
-			if (chart.isInsidePlot(insideX, insideY))
+			if (chart.isInsidePlot(mouseX, mouseY))
 			{
-				var closestPoint = chart.getPoint(chart.allPoints, insideX)
+				var closestPoint = plotHandler.getPoint(chart.allPoints, insideX)
 				var index = chart.visiblePhases.indexOf(closestPoint.phase)
 				
 				chart.drawCrosshairX(insideY);
@@ -379,6 +405,9 @@ Sleuthcharts = (function(Sleuthcharts)
 			{
 				DOMEventHandler.handleDrag(insideX)
 			}
+			
+			DOMEventHandler.lastMousePos.x = mouseX;
+			DOMEventHandler.lastMousePos.y = mouseY;
 		},
 		
 		
@@ -387,6 +416,7 @@ Sleuthcharts = (function(Sleuthcharts)
 		{
 			var DOMEventHandler = this;
 			var chart = DOMEventHandler.chart;
+			var plotHandler = chart.plotHandler;
 			var xAxis = chart.xAxis[0];
 			
 			var insideTimeX = xPos - xAxis.pos.left;
@@ -400,7 +430,7 @@ Sleuthcharts = (function(Sleuthcharts)
 				var shifts = Math.floor(diff / xAxis.fullPointWidth)
 				
 				chart.draggingPos = insideTimeX;
-				chart.shiftXAxis(shifts, direction);
+				plotHandler.shiftXAxis(shifts, direction);
 				chart.redraw();
 			}
 		},
@@ -409,9 +439,12 @@ Sleuthcharts = (function(Sleuthcharts)
 		
 		onContainerMouseLeave: function(e)
 		{
-			var chart = this.chart;
+			var DOMEventHandler = this;
+			var chart = DOMEventHandler.chart;
 			
 			chart.hideRenders();
+			DOMEventHandler.lastMousePos.x = -1;
+			DOMEventHandler.lastMousePos.y = -1;
 		},
 		
 		
@@ -424,10 +457,9 @@ Sleuthcharts = (function(Sleuthcharts)
 			
 			var DOMEventHandler = this;
 			var chart = DOMEventHandler.chart;
+			var plotHandler = chart.plotHandler;
 			
 			e = DOMEventHandler.normalizeMouseEvent(e);
-
-			//console.log(e);
 			
 			if (e.wheelDeltaY == 0)
 				return;
@@ -447,7 +479,8 @@ Sleuthcharts = (function(Sleuthcharts)
 			if ((insideY >= topCheck && insideY <= bottomCheck) && (insideX >= leftCheck && insideX <= rightCheck))
 			{
 				var isZoomOut = e.wheelDeltaY <= 0;
-				chart.zoomChart(isZoomOut);
+				plotHandler.changeZoomState(isZoomOut);
+				chart.redraw();
 			}	
 	
 		},

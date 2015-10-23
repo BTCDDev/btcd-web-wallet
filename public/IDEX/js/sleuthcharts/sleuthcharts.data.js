@@ -1,4 +1,5 @@
 
+// Created by CryptoSleuth <cryptosleuth@gmail.com>
 
 
 Sleuthcharts = (function(Sleuthcharts) 
@@ -97,9 +98,11 @@ Sleuthcharts = (function(Sleuthcharts)
 		},
 		
 		
+		
 		changeMarket: function(newMarket, exchange)
 		{
 			var marketHandler = this;
+			var chart = marketHandler.chart;
 			var settings = {};
 			
 			var isNxtAE = newMarket.isNxtAE;
@@ -122,8 +125,10 @@ Sleuthcharts = (function(Sleuthcharts)
 			
 			marketHandler.marketSettings = Sleuthcharts.extend(marketHandler.marketSettings, settings);
 			marketHandler.marketSettings.market = newMarket;
+			chart.drawMarketName();
 			//marketHandler.marketSettings = settings;
 		},
+		
 		
 		
 		changeSettings: function(newSettings)
@@ -167,6 +172,10 @@ Sleuthcharts = (function(Sleuthcharts)
 			}
 		},
 		
+		
+		
+		
+
 		
 		getMarketData: function()
 		{

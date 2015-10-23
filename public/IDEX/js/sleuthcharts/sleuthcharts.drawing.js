@@ -1,115 +1,175 @@
 
+// Created by CryptoSleuth <cryptosleuth@gmail.com>
 
 
 var IDEX = (function(IDEX, $, undefined) 
 {   
 
-		/*
-		this.isCrosshair = true;
-		this.isDrawing = false;
-		this.isDrawingLine = false;
-		this.isFib = false;
-		this.isFibDrawing = false;
-		
-		this.drawFib = [];
-		
-		this.drawingLine;
-		this.drawPoints = [];
-		this.curDrawPoint = [];
-		*/
-		
-		//var $drawingGroup = $(node).find(".drawingLines");
-		//$drawingGroup.empty();
 
-
-	$("#main_grid").on("click", ".chart-tools-crosshair", function()
+		
+	var DrawingHandler = Sleuthcharts.DrawingHandler = function()
 	{
-		var $wrap = $(this).closest(".chart-header");
-		var node = $wrap.attr("data-chart");
-		
-		var chart = IDEX.allcharts[node];
-		var settings = chart.settings;
-		var sleuthchart = chart.sleuthchart	
-		
-		sleuthchart.isFib = false
-		sleuthchart.isDrawing = false
-		sleuthchart.isCrosshair = true;
-	})
-	
-
-	$("#main_grid").on("click", ".chart-tools-line", function()
-	{
-		var $wrap = $(this).closest(".chart-header");
-		var node = $wrap.attr("data-chart");
-		
-		var chart = IDEX.allcharts[node];
-		var settings = chart.settings;
-		var sleuthchart = chart.sleuthchart	
-		
-		sleuthchart.isCrosshair = false
-		sleuthchart.isFib = false
-		sleuthchart.isDrawing = true
-
-	})	
-	
-	
-	$("#main_grid").on("click", ".chart-tools-fib", function()
-	{
-		var $wrap = $(this).closest(".chart-header");
-		var node = $wrap.attr("data-chart");
-		
-		var chart = IDEX.allcharts[node];
-		var settings = chart.settings;
-		var sleuthchart = chart.sleuthchart	
-		
-		sleuthchart.isCrosshair = false
-		sleuthchart.isDrawing = false
-		sleuthchart.isFib = true
-
-	})	
-
-
-	
-	IDEX.addDrawing = function(chart)
-	{
-		$(chart.node).on("contextmenu", function(e)
-		{
-			return false;
-		})
-		
-		
-		$(chart.node).on("mousedown", function(e)
-		{
-			if (e.which == 3)
-			{
-				e.preventDefault();
-				IDEX.cMousedownRight(chart, e);
-			}
-			else
-			{
-				if (chart.isFib)
-					IDEX.cMousedownFib(chart, e);
-				else
-					IDEX.cMousedown(chart, e);
-
-			}
-		});
-		
-		$(chart.node).on("mousemove", function(e)
-		{
-			if (chart.isFib)
-				IDEX.cMousemoveFib(chart, e);
-			else
-				IDEX.cMousemove(chart, e);
-
-		});
-		
-		$(chart.node).on("mouseup", function(e)
-		{
-			IDEX.cMouseup(chart, e);
-		});
+		this.init.apply(this, arguments)
 	}
 	
+	
+	DrawingHandler.prototype = 
+	{
+		init: function(chart)
+		{
+			var drawingHandler = this;
+			drawingHandler.chart = chart;
+			drawingHandler.lastMousePos = {'x':-1,'y':-1};
+			
+			drawingHandler.isFib = false;
+			drawingHandler.isDrawing = false;
+			drawingHandler.isCrosshair = true;
+			drawingHandler.isDrawingLine = false;
+			drawingHandler.isFibDrawing = false;
+			
+			drawingHandler.drawFib = [];
+			
+			drawingHandler.drawingLine;
+			drawingHandler.drawPoints = [];
+			drawingHandler.curDrawPoint = [];
+
+		},
+		
+		
+		initDOM: function()
+		{
+			var drawingHandler = this;
+			var chart = drawingHandler.chart;
+			
+			drawingHandler.drawingButtonsDOM = chart.headerDOM.find(".chart-drawing-trig");
+			drawingHandler.crosshairButtonDOM = chart.headerDOM.find(".chart-tools-crosshair");
+			drawingHandler.lineButtonDOM = chart.headerDOM.find(".chart-tools-line");
+			drawingHandler.fibButtonDOM = chart.headerDOM.find(".chart-tools-fib");
+			
+			drawingHandler.drawingGroup = chart.headerDOM.find(".drawingLines");
+		},
+		
+		
+		initEventListeners: function()
+		{
+			var drawingHandler = this;
+			var chart = drawingHandler.chart;
+			
+			drawingHandler.drawingButtonsDOM.on("click", function()
+			{
+				var drawingButtonType = $(this).data("drawingType");
+				
+				drawingHandler.isDrawing = true;
+				drawingHandler.isFib = drawingButtonType == "fib";
+				drawingHandler.isCrosshair = drawingButtonType == "crosshair";
+				drawingHandler.isLine = drawingButtonType == "line";
+				
+			});
+			
+			chart.node.on("contextmenu", function()
+			{
+				return false;
+			});
+			
+			chart.node.on("mousedown", function(e)
+			{
+				var drawingHandler = this;
+				var chart = drawingHandler.chart;
+			
+				if (e.which == 3)
+				{
+					e.preventDefault();
+					IDEX.cMousedownRight(chart, e);
+				}
+				else
+				{
+					if (drawingHandler.isLine)
+					{
+						drawingHandler.lineMousedown(e)
+					}
+
+				}
+			});
+			
+			chart.node.on("mousemove", function(e)
+			{
+				if (chart.isFib)
+					IDEX.cMousemoveFib(chart, e);
+				else
+					IDEX.cMousemove(chart, e);
+
+			});
+			
+			chart.node.on("mouseup", function(e)
+			{
+				IDEX.cMouseup(chart, e);
+			});
+			
+			
+		},
+		
+		
+		
+		lineMousedown: function(e)
+		{
+			var drawingHandler = this;
+			var chart = drawingHandler.chart;
+			var DOMEventHandler = chart.DOMEventHandler;
+			
+			e = DOMEventHandler.normalizeMouseEvent(e);
+
+			var mouseX = e.pageX;
+			var mouseY = e.pageY;
+			var insideX = e.chartX;
+			var insideY = e.chartY;
+			
+			if (isInside)
+			{
+				var drawingHandler = this;
+				var chart = drawingHandler.chart;
+		
+				var closestPoint = IDEX.getPoint(chart.pointData, insideX);
+				drawingHandler.makePoint(closestPoint);
+		
+				var curDrawPoints = chart.curDrawPoints;
+				var len = chart.curDrawPoints.length;
+						
+				if (len == 1)
+				{
+					chart.isDrawingLine = false;
+					
+					chart.curDrawPoint.push(curDrawpoint);
+					chart.drawPoints.push(chart.curDrawPoint)
+					chart.curDrawPoint = [];
+				}
+				else
+				{
+					chart.curDrawPoint.push(curDrawpoint)
+					
+					chart.isDrawingLine = true;
+				}
+			}
+		},
+		
+		
+		
+		lineMousemove: function()
+		{
+			if (isInside && chart.isDrawing && isDrawingLine)
+			{
+
+
+						
+				var x2 = closestPoint.pos.middle
+				var y2 = closestPoint.pos[key]
+				chart.drawingLine
+				.attr("x2", x2)
+				.attr("y2", y2)
+
+			}
+		},
+		
+
 	
 	IDEX.cMousemoveFib = function(chart, e) 
 	{
@@ -294,159 +354,16 @@ var IDEX = (function(IDEX, $, undefined)
 	{
 		if (chart.isDrawing)
 		{
-			var node = chart.node
-			var mouseX = e.pageX
-			var mouseY = e.pageY
-			var offsetX = $(node).offset().left;
-			var offsetY = $(node).offset().top;
-			var insideX = mouseX - offsetX
-			var insideY = mouseY - offsetY
-		
-			var xAxis = chart.xAxis[0];
-			var priceAxis = chart.yAxis[0];
-			
-			var height = xAxis.pos['bottom'];
-			var width = priceAxis.pos['left'];
 
-			
-			
-			if (insideY >= 0 && insideY <= height && insideX >= 0 && insideX <= width)
-			{
-				if (insideY >= priceAxis.pos.top && insideY <= priceAxis.pos.bottom)
-				{
-					var insidePriceY = insideY - priceAxis.pos.top
-
-					var $drawingGroup = $(node).find(".drawingLines");
-					var svg = d3.select($drawingGroup.get()[0])
-					
-					var lineAttr = {
-						"stroke-width": 1.5,
-						"stroke": "#999999"
-					}
-					
-					
-					var closestPoint = IDEX.getPoint(chart.pointData, insideX)
-					var key = getClosestYPos(closestPoint.pos, insideY);
-					
-					var obj = {}
-					//obj.price = chart.yAxis[0].getPriceFromY(closestPoint.pos[key])
-					obj.price = tempKey(key, closestPoint.phase)
-					obj.time = closestPoint.phase.startTime
-					obj.x = closestPoint.pos.middle;
-					obj.y = closestPoint.pos[key];
-					
-					var points = chart.curDrawPoint;
-					var len = chart.curDrawPoint.length;
-					
-					if (len == 1)
-					{
-						chart.isDrawingLine = false;
-						
-						chart.curDrawPoint.push(obj);
-						chart.drawPoints.push(chart.curDrawPoint)
-						chart.curDrawPoint = [];
-					}
-					else
-					{
-						chart.curDrawPoint.push(obj)
-						//console.log(e)
-						
-						chart.drawingLine = svg.append("line")
-						.attr("x1", closestPoint.pos.middle)
-						.attr("y1", closestPoint.pos[key])
-						.attr("x2", closestPoint.pos.middle)
-						.attr("y2", closestPoint.pos[key])
-						.attr(lineAttr);
-						
-						chart.isDrawingLine = true;
-					}
-				}
-			}
 		}
 	}
 
 	IDEX.cMousemove = function(chart, e) 
 	{
-		if (chart.isDrawing)
-		{
-			var node = chart.node
-			var mouseX = e.pageX
-			var mouseY = e.pageY
-			var offsetX = $(node).offset().left;
-			var offsetY = $(node).offset().top;
-			var insideX = mouseX - offsetX
-			var insideY = mouseY - offsetY
-			
-			var xAxis = chart.xAxis[0];
-			var priceAxis = chart.yAxis[0];
-			
-			var height = xAxis.pos['bottom'];
-			var width = priceAxis.pos['left'];
 
-			
-			if (insideY >= 0 && insideY <= height && insideX >= 0 && insideX <= width)
-			{
-				if (insideY >= priceAxis.pos.top && insideY <= priceAxis.pos.bottom)
-				{
-					var insidePriceY = insideY - priceAxis.pos.top
-					var closestPoint = IDEX.getPoint(chart.pointData, insideX)
-	
-					var $drawingFollow = $(node).find(".drawingFollow");
-					
-					var key = getClosestYPos(closestPoint.pos, insideY);
-					
-					d3.select($drawingFollow.get()[0])
-					.attr("x", closestPoint.pos.middle - 3)
-					.attr("y", closestPoint.pos[key] - 3)
-					.attr("width", 6)
-					.attr("height", 6)
-					.attr("fill", "#999999")
-					.attr("stroke", "#999999")
-					.attr("stroke-width", 1);
-					
-					
-					//var svg = d3.select($(node).get()[0])
-
-					if (chart.isDrawingLine)
-					{
-						var y1 = priceAxis.getPos(chart.curDrawPoint[0].price);
-						var xPoint = IDEX.getXPoint(chart.pointData, chart.curDrawPoint[0].time);
-						var x1 = xPoint.pos.middle;
-						
-						var x2 = closestPoint.pos.middle
-						var y2 = closestPoint.pos[key]
-						
-						//console.log(y2)
-						//console.log(y1)
-						//console.log(x2)
-						//console.log(x1)
-						
-						var rise = Number(y2) - Number(y1)
-						var run = Number(x2) - Number(x1)
-						
-						
-						//console.log('rise/run: ' + String(rise) + " / " + String(run));
-						chart.drawingLine
-						.attr("x2", x2)
-						.attr("y2", y2)
-					}
-				}
-			}
-		}
 	}
 	
-	
-	function tempKey(key, phase)
-	{
-		var closedHigher = phase.close > phase.open
-		map = {}
-		map.topLeg = phase.high;
-		map.topBody = closedHigher ? phase.close : phase.open;
-		map.bottomBody = closedHigher ? phase.open : phase.close;
-		map.bottomLeg = phase.low;
-		
-		return map[key]
-	}
+
 	
 	function getClosestYPos(pointPositions, pos)
 	{

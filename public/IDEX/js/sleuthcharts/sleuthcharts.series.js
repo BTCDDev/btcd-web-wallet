@@ -1,5 +1,7 @@
 
 
+// Created by CryptoSleuth <cryptosleuth@gmail.com>
+
 
 Sleuthcharts = (function(Sleuthcharts) 
 {
@@ -99,41 +101,29 @@ Sleuthcharts = (function(Sleuthcharts)
 			var yAxis = series.yAxis;
 			
 			var removeHeight = yAxis.fullHeight;
-			//var removeHeightInit = parseFloat(yAxis.heightInit);
-			
-			//var allSeries = chart.series.slice();
+
 			chart.series.splice(series.index, 1);
 			chart.yAxis.splice(yAxis.index, 1);
 			chart.axes = chart.xAxis.concat(chart.yAxis);
 			
 			var numYAxis = chart.yAxis.length;
 			var heightPortion = removeHeight/numYAxis;
-			
-			//var running = 0;
-			//running += removeHeightInit;
-			
+
+	
 			for (var i = 0; i < chart.yAxis.length; i++)
 			{
 				var loopYAxis = chart.yAxis[i];;
-				
-				
-				//var plus = removeHeightInit/numYAxis
+
 				loopYAxis.fullHeight = (loopYAxis.fullHeight + heightPortion);
 				loopYAxis.height = loopYAxis.fullHeight - (loopYAxis.padding.top + loopYAxis.padding.bottom);
-				
-				//console.log(heightPerc + plus);
-				//running += heightPerc + plus;
 			}
-			
-			//console.log(running);
-			
+
 			seriesTab.seriesTabDOM.remove();
 			
 			Sleuthcharts.updateArrayIndex(chart.series);
 			Sleuthcharts.updateArrayIndex(chart.yAxis);
 			
 			chart.redraw();
-			console.log('remove series');
 		},
 		
 		
@@ -208,258 +198,6 @@ Sleuthcharts = (function(Sleuthcharts)
 		
 		
 		
-		initAxis: function()
-		{
-			var series = this;
-			var chart = series.chart;
-			//axis.height = this.height * options.heightPerc;
-			//axis.width = this.width * options.widthPerc;
-		},
-		
-		
-		
-		setDefaultMarketDataRange: function()
-		{
-			var series = this;
-			var chart = series.chart;
-			var xAxis = chart.xAxis[0];
-			var marketHandler = chart.marketHandler;
-			var allPhases = marketHandler.marketData.ohlc;
-			var allPhasesLength = allPhases.length;
-			
-			
-
-			var startIndex = 0;
-			var endIndex = allPhases.length - 1;
-			
-			var range = xAxis.range;
-			//range = 500;
-			var minRange = xAxis.minRange
-			
-			if (allPhasesLength > range)
-			{
-				startIndex = allPhasesLength - range;
-			}
-			
-			
-			var visiblePhases = allPhases.slice(startIndex);
-			
-
-			chart.visiblePhases = visiblePhases;
-			series.updateAxisMinMax(startIndex, endIndex);
-			series.calcPointWidth();
-
-		},
-		
-		
-		
-		updateAxisMinMax: function(startIndex, endIndex)
-		{
-			var series = this;
-			var chart = series.chart;
-			
-			for (var i = 0; i < chart.axes.length; i++)
-			{
-				chart.axes[i].updateMinMax(startIndex, endIndex);
-			}				
-		},
-		
-		
-		
-		changeZoomState: function(isZoomOut)
-		{
-			var series = this;
-			var chart = series.chart;
-			var xAxis = chart.xAxis[0];
-			var xAxisWidth = xAxis.width;
-			var startIndex = xAxis.minIndex;
-			var allPhases = chart.marketHandler.marketData.ohlc;
-			var zoomState = xAxis.fullPointWidth;
-
-			var zoomStates = [2, 3, 4, 5, 6, 7, 10, 13, 15, 17, 20, 25, 30, 40, 50];
-			
-			for (var i = 0; i < zoomStates.length; i++)
-			{
-				if (zoomState == zoomStates[i])
-					break;
-			}
-
-			var newIndex = isZoomOut ? i - 1 : i + 1;
-			
-			if (newIndex < 0 || newIndex > zoomStates.length - 1)
-			{
-				return;
-			}
-			
-			var newZoomState = zoomStates[newIndex];
-			
-			var fullPointWidth = newZoomState;
-			var numPhases = Math.floor(xAxisWidth / fullPointWidth);			
-			var newStartIndex = (xAxis.maxIndex - numPhases) + 1;
-			var numMissingPoints = 0;
-			
-			if (newStartIndex < 0)
-			{
-				numMissingPoints = Math.abs(newStartIndex);
-				newStartIndex = 0;
-			}
-			
-			var missingPixelWidth = numMissingPoints * fullPointWidth;
-			var realNumPhases = (xAxis.maxIndex - newStartIndex) + 1;			
-			var pixelWidthUnder = (xAxisWidth - (realNumPhases * fullPointWidth)) - missingPixelWidth;
-			
-			
-			var pointPadding = 1;
-			
-
-			if (fullPointWidth >= 3) pointPadding = 2;
-			if (fullPointWidth >= 6) pointPadding = 3;
-			if (fullPointWidth >= 10) pointPadding = 4;
-			if (fullPointWidth >= 15) pointPadding = 5;
-			if (fullPointWidth >= 20) pointPadding = 6;
-			if (fullPointWidth >= 30) pointPadding = 8;
-			if (fullPointWidth >= 100) pointPadding = 20;
-			
-			var pointWidth = fullPointWidth - pointPadding;
-			
-			//console.log([numPhases, realNumPhases]);
-			//console.log([newStartIndex, numMissingPoints, missingPixelWidth, pixelWidthUnder]);
-			//console.log([fullPointWidth, pointPadding, pointWidth]);
-			
-	
-			xAxis.fullPointWidth = fullPointWidth;
-			xAxis.pointWidth = pointWidth;
-			xAxis.pointPadding = pointPadding;
-			xAxis.numPoints = Math.ceil(xAxisWidth / fullPointWidth);
-			xAxis.pixelWidthUnder = pixelWidthUnder;
-			xAxis.missingPixelWidth = missingPixelWidth;
-			
-			visiblePhases = allPhases.slice(newStartIndex, xAxis.maxIndex+1);
-
-			chart.visiblePhases = visiblePhases;
-			series.updateAxisMinMax(newStartIndex, xAxis.maxIndex);
-			
-			//console.log(xAxis);
-			
-			//fullPointWidth = 0.5 * Math.round(fullPointWidth/0.5);
-		},
-		
-		
-		calcPointWidth: function()
-		{
-			var series = this;
-			var chart = series.chart;
-			var xAxis = chart.xAxis[0];
-			var xAxisWidth = xAxis.width;
-			var allPhases = chart.marketHandler.marketData.ohlc;
-			var fullPointWidth = xAxis.fullPointWidth;
-
-
-			var numPhases = Math.floor(xAxisWidth / fullPointWidth);			
-			var newStartIndex = (xAxis.maxIndex - numPhases) + 1
-			var numMissingPoints = 0;
-			
-			if (newStartIndex < 0)
-			{
-				numMissingPoints = Math.abs(newStartIndex);
-				newStartIndex = 0;
-			}
-			
-			var missingPixelWidth = numMissingPoints * fullPointWidth;
-			var realNumPhases = (xAxis.maxIndex - newStartIndex) + 1;			
-			var pixelWidthUnder = (xAxisWidth - (realNumPhases * fullPointWidth)) - missingPixelWidth;
-			
-
-	
-			xAxis.numPoints = Math.ceil(xAxisWidth / fullPointWidth);
-			xAxis.pixelWidthUnder = pixelWidthUnder;
-			xAxis.missingPixelWidth = missingPixelWidth;
-			
-			visiblePhases = allPhases.slice(newStartIndex, xAxis.maxIndex+1);
-
-			chart.visiblePhases = visiblePhases;
-			series.updateAxisMinMax(newStartIndex, xAxis.maxIndex);
-		},
-		
-		
-		
-		
-		getPointPositions: function()
-		{
-			var series = this;
-			var chart = series.chart;
-			var xAxis = chart.xAxis[0];
-			var priceAxis = chart.yAxis[0];
-			
-			var totalPointWidth = xAxis.fullPointWidth * chart.visiblePhases.length;
-			var xPos = Math.floor(xAxis.pos.left + xAxis.pixelWidthUnder);
-			//var xPos = Math.floor(xAxis.pos.right - xAxis.missingPixelWidth);
-
-			var phases = chart.visiblePhases;
-			var phasesLength = phases.length;
-			
-			var fullPointWidth = xAxis.fullPointWidth;
-			var pointWidth = xAxis.pointWidth;
-
-			var allPoints = []
-			
-			var isFullDec = fullPointWidth % 1 != 0;
-			var isWidthDec = pointWidth % 1 != 0;
-			var isFullOdd = pointWidth % 2 != 0;
-			
-			if (!isFullOdd)
-				xPos += 0.5;
-
-			for (var i = 0; i < phasesLength; i++)
-			{
-				var phase = phases[i];
-				var closedHigher = phase.close > phase.open;
-				
-				var top = closedHigher ? phase.close : phase.open;
-				var bottom = closedHigher ? phase.open : phase.close;
-				
-				var bottomBody = priceAxis.getPositionFromValue(bottom);
-				var bottomLeg = priceAxis.getPositionFromValue(phase.low);
-				var topBody = priceAxis.getPositionFromValue(top);
-				var topLeg = priceAxis.getPositionFromValue(phase.high);
-				
-				
-				var left = xPos;
-				var right = left + pointWidth;
-				var middle = (left + right) / 2;
-				
-				topBody = Math.floor(topBody) + 0.5;
-				bottomBody = Math.floor(bottomBody) + 0.5;
-				
-				if (isFullOdd)
-				{
-					left += 0.5;
-					right -= 0.5;
-				}
-
-
-				//console.log([left, right]);
-				
-				var positions = {};
-				positions.left = left;
-				positions.right = right;
-				positions.middle = middle;
-				positions.topLeg = topLeg;
-				positions.topBody = topBody;
-				positions.bottomBody = bottomBody;
-				positions.bottomLeg = bottomLeg;
-
-				allPoints.push({"phase":phase, "pos":positions});
-				
-				xPos += fullPointWidth;
-			}
-			
-			
-			chart.allPoints = allPoints;
-		},
-		
-		
-		
 		getSeriesData: function()
 		{
 			var dfd = new $.Deferred();
@@ -472,7 +210,6 @@ Sleuthcharts = (function(Sleuthcharts)
 			{
 				chart.marketHandler.getMarketData().done(function()
 				{
-					//console.log('main');
 					dfd.resolve();
 				}).fail(function()
 				{
@@ -483,7 +220,6 @@ Sleuthcharts = (function(Sleuthcharts)
 			{
 				if (series.usesMainData)
 				{
-					//console.log('vol');
 					dfd.resolve();
 				}
 				
@@ -491,8 +227,6 @@ Sleuthcharts = (function(Sleuthcharts)
 				{
 					series.marketHandler.getSeriesData().done(function()
 					{
-						//console.log('ind');
-						//console.log(series.marketHandler.formattedData);
 						dfd.resolve();
 					})
 					

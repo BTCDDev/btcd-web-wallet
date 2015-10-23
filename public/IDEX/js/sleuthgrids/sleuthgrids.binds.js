@@ -1,42 +1,18 @@
 
+// Created by CryptoSleuth <cryptosleuth@gmail.com>
+
 
 Sleuthgrids = (function(Sleuthgrids) 
-{
-	var $contentWrap = $("#content_wrap");
-	
-
-	$(window).on("beforeunload", function()
-	{
-		var saves = Sleuthgrids.saveAllGrids();
-		
-		//console.log(saves);
-		localStorage.setItem('grids', JSON.stringify(saves));
-	})
-	
+{	
 	
 	
 	$(window).resize(function(e)
 	{
-		Sleuthgrids.resizeAllGrids();
-	})
-	
-	
-	
-	$(".util-grid-newTab").on("click", function()
-	{
-		var numGrids = Sleuthgrids.allGrids.length;
-		
-		if (numGrids >= 5)
+		if (Sleuthgrids.gridOverlord)
 		{
-			$.growl.warning({'message':"Limit of 5 grids reached", 'location':"tl"});
-		}
-		else
-		{
-			var grid = new Sleuthgrids.Grid();
-			grid.gridTab.gridTabDOM.trigger("click");
+			Sleuthgrids.gridOverlord.resizeAllGrids();
 		}
 	})
-	
 	
 	
 	$(document).on("mousemove", function(e)
@@ -52,7 +28,7 @@ Sleuthgrids = (function(Sleuthgrids)
 	$(document).on("mousedown", function(e)
 	{	
 		var $tile = $(e.target).closest(".tile")
-		var $grid = $contentWrap.find(".grid.active");
+		var $grid = Sleuthgrids.contentWrap.find(".grid.active");
 
 		if ($grid.length)
 		{
@@ -73,7 +49,6 @@ Sleuthgrids = (function(Sleuthgrids)
 
 		var cellType = $(this).attr("data-grid");
 		
-		
 		Sleuthgrids.isGridTrig = true;
 		Sleuthgrids.isTriggeredNew = true;
 		Sleuthgrids.triggeredType = cellType;
@@ -85,16 +60,16 @@ Sleuthgrids = (function(Sleuthgrids)
 	{
 		if (Sleuthgrids.isGridTrig)
 		{
-			var $grid = $contentWrap.find(".grid.active");
+			var $grid = Sleuthgrids.contentWrap.find(".grid.active");
 			
 			if ($grid.length)
 			{
-				var has = $tileAdd.hasClass("active")
+				var has = Sleuthgrids.tileAdd.hasClass("active")
 				
 				if (!has)
 				{
 					Sleuthgrids.updateTileAddPos(e)	
-					$tileAdd.addClass("active");
+					Sleuthgrids.tileAdd.addClass("active");
 					$grid.find(".grid-arrow").addClass("active");
 					
 					var hasGrids = $grid.find(".tile").length;
@@ -120,7 +95,7 @@ Sleuthgrids = (function(Sleuthgrids)
 		{
 			Sleuthgrids.isGridTrig = false;
 			Sleuthgrids.triggeredCell = null;
-			$tileAdd.removeClass("active");
+			Sleuthgrids.tileAdd.removeClass("active");
 			$(".grid-arrow").removeClass("active");
 			$(".tile-arrow-wrap").removeClass("active");
 			$(".grid-trig").removeClass("mousedown");
@@ -130,12 +105,11 @@ Sleuthgrids = (function(Sleuthgrids)
 		{
 			var allGrids = Sleuthgrids.allGrids;
 			
-			for (var i = 0; i < allGrids.length; i++)
+			for (var i = 0; i < Sleuthgrids.gridOverlord.grids.length; i++)
 			{
-				var grid = allGrids[i];
-				grid.toggleTileResizeOverlay(false);
-				grid.resizeTileCells();
-				//grid.resizeTiles();
+				var grid = Sleuthgrids.gridOverlord.grids[i];
+				grid.tileOverlord.toggleTileResizeOverlay(false);
+				grid.tileOverlord.resizeTileCells();
 			}
 		}
 		
@@ -165,7 +139,7 @@ Sleuthgrids = (function(Sleuthgrids)
 	})
 	
 	*/
-	
+
 
 
 	return Sleuthgrids;
